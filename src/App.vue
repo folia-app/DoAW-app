@@ -1,11 +1,17 @@
 <template>
-  <div id="app" class="mx-auto">
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
   
-<script setup>
-// import store from '@/store'
-
-// store.dispatch('init')
+<script lang="ts">
+export default {
+  watch: {
+    '$route' (to) {
+      const isTokenOverlay = to.path.includes('tokens/')
+      // lock scrolling for overlays
+      document.body.style.overflow = isTokenOverlay ? 'hidden' : 'auto'
+    }
+  }
+}
 </script>

@@ -7,36 +7,7 @@
   /* --rem:10px; */
   
   /* web3onboard */
-  --onboard-font-family-normal: sans-serif;
-
-  --stroke-w-xs: 5px;
-  --stroke-w-sm: 6px;
-  --stroke-w: 7px;
-
-  --h1: 60px;
-  --h2: 56px;
-  --h3: 45px;
-  --h3b: 40px;
-  --h4: 36px;
-  --h5: 30px;
-  --h5b: 28px;
-  --h6: 22px;
-
-  --color-bg: black;
-  --color-text: #CCFF01;
-  --color-accent: cyan ; /*#0d84fa;*/
-  --color-accent2: rgb(0,255,0);
-  --color-accent3: magenta;
-
-  --red-500: rgb(255,0,0);
-}
-
-@screen md {
-  :root {
-    --stroke-w-xs: 6px;
-    --stroke-w-sm: 7px;
-    --stroke-w: 10px;
-  }
+  --onboard-font-family-normal: "ZK-Spectrum", monospace;
 }
 
 /* base / reset */
@@ -45,6 +16,11 @@ html{
   /* font-size:var(--rem); */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: 'ZK-Spectrum';
+  src: url('../assets/zxspectr.woff');
 }
 
 *{

@@ -1,59 +1,107 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Index from '../views/Index.vue'
+import GridViewsIndex from '../views/GridViewsIndex.vue'
 import EmptyView from '../views/EmptyView.vue'
 // import Token from '../views/Token.vue'
-import Mint from '../views/Mint.vue'
 
 const routes = [
   {
     path: '/',
-    component: Home,
+    component: Index,
     children: [
       {
         path: '',
-        name: 'home',
-        redirect: import.meta.env.VITE_SOLD_OUT ? '/nfts' : '/mint'
-      },
-      {
-        path: 'mint',
-        name: 'mint',
-        component: Mint
-      },
-      {
-        path: 'nfts',
-        name: 'nfts',
-        component: () => import('../views/NFTs.vue'),
+        name: 'home__index',
+        component: GridViewsIndex,
         children: [
           {
-            path: '',
-            name: 'nfts-index',
-            component: () => import('../views/NFTsIndex.vue'), // lazy loading but not required
-            // children: [
-            //   {
-            //     path: ':tokenId',
-            //     name: 'nfts-index-token',
-            //     component: () => import('../views/Token.vue')
-            //   }
-            // ]
-          },
-          {
-            path: 'yours',
-            name: 'nfts-yours',
-            component: () => import('../views/NFTsProfile.vue')
-          },
-          {
-            path: ':address',
-            name: 'profile',
-            component: () => import('../views/NFTsProfile.vue')
+            path: 'tokens/:tokenId',
+            name: 'index__token',
+            component: () => import('../views/TokenOverlay.vue')
           }
         ]
       },
       {
-        path: 'faq',
-        name: 'faq',
-        component: () => import('../views/FAQ.vue')
+        path: 'yours',
+        name: 'home__yours',
+        component: EmptyView,
+        children: [
+          {
+            path: 'tokens/:tokenId',
+            name: 'yours__token',
+            component: () => import('../views/TokenOverlay.vue')
+          }
+        ]
       },
+      {
+        path: ':address',
+        name: 'home__collector',
+        component: EmptyView,
+        children: [
+          {
+            path: 'tokens/:tokenId',
+            name: 'collector__token',
+            component: () => import('../views/TokenOverlay.vue')
+          }
+        ]
+      },
+      {
+        path: 'owners',
+        name: 'home__owners',
+        component: EmptyView
+      }
     ],
+    // children: [
+    //   {
+    //     path: '',
+    //     name: 'home',
+    //     redirect: import.meta.env.VITE_SOLD_OUT ? '/sneks' : '/mint'
+    //   },
+    //   {
+    //     path: 'mint',
+    //     name: 'mint',
+    //     component: Mint
+    //   },
+    //   {
+    //     path: 'sneks',
+    //     name: 'sneks',
+    //     component: () => import('../views/Sneks.vue'),
+    //     children: [
+    //       {
+    //         path: '',
+    //         name: 'sneks-index',
+    //         component: () => import('../views/SneksIndex.vue'), // lazy loading but not required
+    //         // children: [
+    //         //   {
+    //         //     path: ':tokenId',
+    //         //     name: 'sneks-index-token',
+    //         //     component: () => import('../views/Token.vue')
+    //         //   }
+    //         // ]
+    //       },
+    //       {
+    //         path: 'yours',
+    //         name: 'sneks-yours',
+    //         component: () => import('../views/SneksProfile.vue')
+    //       },
+    //       {
+    //         path: ':address',
+    //         name: 'sneks-profile',
+    //         component: () => import('../views/SneksProfile.vue')
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     path: 'bites',
+    //     name: 'bites',
+    //     component: () => import('../views/Bites.vue'),
+    //   },
+    //   {
+    //     path: 'faq',
+    //     name: 'faq',
+    //     component: () => import('../views/FAQ.vue')
+    //   },
+    // ],
   },
   {
     path: '/tokens/:tokenId',
@@ -70,7 +118,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior (to, from, savedPosition) {
     if (to.hash) {
       return {
         el: to.hash,
@@ -91,7 +139,7 @@ const router = createRouter({
       // if (isSameAddress || isSameNetwork) {
       //   return
       // }
-      if (to.name.includes(from.name)) {
+      if (to.name.split('_')[0] === from.name.split('_')[0]) {
         return
       }
       // scroll to top
