@@ -6,8 +6,9 @@
 :root{
   /* --rem:10px; */
   
-  /* web3onboard */
+  /* web3onboard - https://onboard.blocknative.com/docs/getting-started/custom-styling */
   --onboard-font-family-normal: "ZK-Spectrum", monospace;
+  --onboard-modal-z-index: 200;
 }
 
 /* base / reset */
@@ -79,4 +80,8 @@ input{
   &:hover, &:focus{
     border-style:solid;
   }
+}
+
+.border-dotted{
+  border-style: dotted;
 }

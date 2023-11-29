@@ -19,6 +19,7 @@ export default {
         mouse: { raw: '(hover:hover)' }
       },
       colors: {
+        'green-neon': '#03FF00',
         grau: {
           200: '#D9D9D9',
           400: '#B1B1B1',
@@ -35,11 +36,6 @@ export default {
       borderWidth: {
         DEFAULT: '1.75px', // match 16px font weight
       },
-      borderRadius: {
-        'stroke': 'var(--stroke-w)',
-        'stroke2x': 'calc(var(--stroke-w) * 2)',
-        'stroke3x': 'calc(var(--stroke-w) * 3)',
-      },
       borderColor: {
         DEFAULT: pen,
       },
@@ -48,6 +44,18 @@ export default {
       },
       gap: {
         inherit: 'inherit',
+      },
+      boxShadow: {
+        'hard': '6px 6px 0 black',
+      },
+      animation: {
+        'blink': 'blink 250ms infinite linear',
+      },
+      keyframes: {
+        'blink': {
+          '0%, 50%': { opacity:0 },
+          '51%, 100%': { opacity:1 },
+        }
       }
     },
   },
