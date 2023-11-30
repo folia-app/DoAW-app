@@ -23,6 +23,7 @@ export default {
         grau: {
           200: '#D9D9D9',
           400: '#B1B1B1',
+          600: '#959595',
         }
       },
       fontFamily: {

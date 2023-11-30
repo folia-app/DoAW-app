@@ -3,7 +3,7 @@
     <section class="flex flex-col h-screen">
       <!-- fills remaining screen after bottom bars -->
       <div class="relative flex-1">
-        <iframe :src="iframeUrl" class="absolute overlay" />
+        <iframe ref="iframeEl" :src="iframeUrl" class="absolute overlay" />
       </div>
 
       <!-- bottom bar -->
@@ -60,58 +60,45 @@
 
     <!-- modal -->
     <template v-if="mintModalVisible">
-      <div class="fixed z-30 overlay flex p-4">
-        <div class="m-auto w-full max-w-[30em] px-4 pb-4 pt-16 flex flex-col gap-16 relative z-10 bg-grau-400 shadow-hard text-center">
-          <div class="flex flex-col gap-8">
-            <h6>MINT DoAW:</h6>
-            <p class="leading-[2]">CURRENT BRING TRUE DERIVE RETURN PIONEER SIBLING WHALTE LAMP ACCESS PRISON RUBBER</p>
-            <div>?</div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <!-- price -->
-            <div class="flex gap-1">
-              <div>PRICE:</div>
-              <div class="flex-1 min-w-0 truncate">
-                0.12345678901234567891234567890123456789
-              </div>
-              <div>ETH</div>
-            </div>
-            <ConnectButton connectedTheme="bg-neutral-400 text-black" />
-            <button class="flex h-12 items-center justify-center border" :class="{'border-dotted cursor-not-allowed': !canMint}" :disabled="!canMint">
-              MINT
-            </button>
-          </div>
-        </div>
-        <button class="absolute overlay cursor-default" @click="closeMintModal" aria-label="Close Mint Dialog"></button>
-      </div>
+      <MintModal @close="mintModalVisible = false" :entropyHex="entropyHex" />
     </template>
   </article>
 </template>
 
 <script setup>
 import ConnectButton from '../components/ConnectButton.vue'
+import MintModal from '../components/MintModal.vue'
 import store from '../store';
-import { computed, ref } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
 
 const iframeUrl = import.meta.env.VITE_SERVER
 
 const mintCount = computed(() => store.getters.mintCount)
 const maxSupply = computed(() => store.state.maxSupply)
-const canMint = computed(() => store.getters.address)
 
 store.dispatch('getMaxSupply')
 store.dispatch('getPrice')
 
+const iframeEl = ref()
 const mintModalVisible = ref(false)
-let prevActiveEl 
-const openMintModal = () => {
-  prevActiveEl = document.activeElement
+
+function openMintModal () {
   mintModalVisible.value = true
 }
-const closeMintModal = () => {
-  prevActiveEl.focus()
-  mintModalVisible.value = false
+
+const entropyHex = ref()
+
+function listenToMessages (event) { 
+  // Handle the received message data
+  if (event.origin === iframeUrl) {
+    entropyHex.value = event.data
+    console.log('entropy:', entropyHex.value)
+  }
 }
+
+window.addEventListener('message', listenToMessages)
+
+onUnmounted(() => window.removeEventListener('message', listenToMessages))
 </script>
 
 <style scoped>
