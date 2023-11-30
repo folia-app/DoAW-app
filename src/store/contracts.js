@@ -7,7 +7,7 @@ const infuraKey = import.meta.env.VITE_INFURA_KEY
 
 const infuraProvider = new ethers.providers.InfuraProvider(network, infuraKey)
 
-const NFTContractDeploy = Contracts.NFT
+const NFTContractDeploy = Contracts.DoAW
 
 function getNftContract (provider) {
   return new ethers.Contract(NFTContractDeploy.networks[network].address, NFTContractDeploy.abi, provider)
@@ -41,6 +41,7 @@ async function init() {
   // get all previous Transfer events from NFTContract
   nftContract.queryFilter(nftContract.filters.Transfer(), 0)
     .then((events) => {
+      store.commit('NFTS_LOADED')
       events.forEach(processNFTTransfer)
     })
 
@@ -61,9 +62,9 @@ function wrappedProcessNFTTransfer(...args) {
 function processNFTTransfer(event) {
   var from = event.args[0]
   var to = event.args[1].toString()
-  var tokenId = ethers.BigNumber.from(event.args[2])
+  var tokenId = event.args[2].toString() // ethers.BigNumber.from(event.args[2])
   if (from === ethers.constants.AddressZero) {
-    const nft = { tokenId: tokenId.toString(), owner: to }
+    const nft = { tokenId, owner: to }
     store.commit('ADD_NFT', nft)
   } else {
     let nft = store.state.nfts.find(nft => nft.tokenId === tokenId.toString())

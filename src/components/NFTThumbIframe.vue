@@ -1,22 +1,22 @@
 <template lang="pug">
 observer.block.absolute.overlay.flex.items-center.justify-center.overflow-hidden(v-if="isObserving", :threshold="0.01", @visible="onVisible", @hidden="onHidden")
-  .text-3xs(:class="!loadError && 'animate-pulse'") {{ loadError ? loadError : id.toString().length < 3 ? `#${id}` : '🐍' }}
-  template(v-if="visible && iframeSrc")
-    iframe.absolute.overlay.object-contain.pointer-events-none(:src="iframeSrc")
-    //- | {{ id }}:{{ iframeSrc }}
-  //- template(v-if="imgSrc && visible")
-    img.absolute.overlay.object-contain.object-center(:src="imgSrc", @load="imgLoaded = true", @error="onError", :class="{'opacity-0': !imgLoaded}")
-    
+  div(:class="!loadError && 'animate-blink'")
+    | {{ loadError ? loadError : `#${tokenIndex + 1}` }}
+  template(v-if="render")
+    iframe.absolute.overlay.object-contain.pointer-events-none(v-show="visible", :src="iframeSrc", @load="onLoad")    
 </template>
 
 <script>
 import Observer from './Observer.vue'
+import doawIframeUrl from '../utils/doawIframeUrl.js'
+
 export default {
   name: 'NFTThumbIframe',
   props: ['id'],
   components: { Observer },
   data () {
     return {
+      render: false,
       visible: false,
       imgSrc: undefined,
       imgLoaded: false,
@@ -28,15 +28,18 @@ export default {
   },
   computed: {
     iframeSrc () {
-      // /api/get/iframe?#<token-id>
-      return `${import.meta.env.VITE_SERVER}/get/iframe?#${this.id}`
+      return doawIframeUrl({ tokenId: this.id, muted: true })
+    },
+    tokenIndex () {
+      return this.$store.state.nfts?.findIndex(nft => nft.tokenId === this.id)
     }
   },
   methods: {
     onVisible () {   
+      console.log('visible')
       const reveal = () => {
-        this.visible = true
-        this.loadImage() 
+        this.render = true
+        // this.loadImage() 
       }
 
       if (!this.imgLoaded) {
@@ -48,14 +51,18 @@ export default {
     },
     onHidden () {
       clearTimeout(this.visibleTimeout)
+      this.render = false
       this.visible = false
     },
-    loadImage () {
-      if (this.imgSrc) return
-      // this.$store.dispatch('getCableImage', { id: this.id.toString() })
-      //   .then(imgSrc => this.imgSrc = imgSrc)
+    // loadImage () {
+    //   if (this.imgSrc) return
+    //   // this.$store.dispatch('getCableImage', { id: this.id.toString() })
+    //   //   .then(imgSrc => this.imgSrc = imgSrc)
 
-      this.imgSrc = `${import.meta.env.VITE_SERVER}/get/img/${this.id}`
+    //   this.imgSrc = `${import.meta.env.VITE_SERVER}/get/img/${this.id}`
+    // },
+    onLoad () {
+      setTimeout(() => { this.visible = true }, 300)
     },
     onError (e) {
       console.log(e)

@@ -1,5 +1,5 @@
 <template>
-  <div class="tx-row rounded-xl flex items-center justify-between text-h6 min-h-20 px-5 py-3">
+  <div class="tx-row px-2.5 py-2 flex justify-between items-start">
     <slot></slot>
   </div>
 </template>

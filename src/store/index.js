@@ -121,6 +121,9 @@ const store = createStore({
     ACCOUNT(state, { account }) {
       state.account = account
     },
+    NFTS_LOADED (state) {
+      state.nfts = []
+    },
     ADD_NFT(state, nft) {
       if (state.nfts === undefined) {
         state.nfts = []
@@ -155,12 +158,12 @@ const store = createStore({
     UPDATE_TX(state, { txHash, status }) {
       const index = state.pending.findIndex(pendingTx => pendingTx.txHash === txHash)
       state.pending[index].status = status
-      setTimeout(() => {
-        const index = state.pending.findIndex(pendingTx => pendingTx.txHash === txHash)
-        if (index > -1) {
-          state.pending.splice(index, 1)
-        }
-      }, 5000)
+      // setTimeout(() => {
+      //   const index = state.pending.findIndex(pendingTx => pendingTx.txHash === txHash)
+      //   if (index > -1) {
+      //     state.pending.splice(index, 1)
+      //   }
+      // }, 5000)
     },
     SET_DATE_PUBLIC (state, milliseconds) {
       state.datePublic = milliseconds
@@ -232,10 +235,9 @@ const store = createStore({
           throw e
         })
     },
-    async mint({ getters, dispatch }, amount = 1) {
+    async mint({ getters, dispatch }, entropy) {
       await dispatch('checkNetwork')
-      const price = await dispatch('getPrice')
-      const value = price.mul(amount)
+      const value = await dispatch('getPrice')
       let userBalance = getters.balance?.ETH
       if (!userBalance) {
         const infuraProvider = new ethers.providers.InfuraProvider(network, infuraKey)
@@ -245,7 +247,7 @@ const store = createStore({
       }
       if (userBalance.lt(value)) {
         const missing = getters.weiToETH(value.sub(userBalance)).substring(0, 6)
-        throw new Error(`Sorry, your wallet balance is ${missing.toString()}ETH too low to mint ${amount} tokens.`)
+        throw new Error(`Sorry, your wallet balance is ${missing.toString()}ETH too low to mint.`)
       }
 
       const paused = await nftContract.paused()
@@ -258,7 +260,7 @@ const store = createStore({
       const waitUntil = new Date(datePublic).toLocaleString()
       if (now < datePublic) {
         const datePremint = await dispatch('getDatePremint')
-        if (now < datePremint) {
+        if (!datePremint || now < datePremint) {
           throw new Error(`Sorry, minting is not yet open.`)
         } else {
 
@@ -312,8 +314,8 @@ const store = createStore({
       }
 
       try {
-        console.log('mint public')
-        const tx = await nftContract['mint(address,uint256)'](getters.address, amount, { value })
+        console.log('mint public with entropy')
+        const tx = await nftContract['mintWithEntropy(address,uint256)'](getters.address, entropy, { value })
         return dispatch('handlePendingTx', { name: 'mint', tx })
       } catch (e) {
         if (e.toString().indexOf("rejected transaction") > -1) {

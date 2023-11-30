@@ -49,8 +49,12 @@ export default {
       boxShadow: {
         'hard': '6px 6px 0 black',
       },
+      aspectRatio: {
+        'doaw-thumb': '236 / 150',
+      },
       animation: {
         'blink': 'blink 250ms infinite linear',
+        'blink-slow': 'blink 400ms infinite linear',
       },
       keyframes: {
         'blink': {
