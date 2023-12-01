@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Index from '../views/Index.vue'
-import GridViewsIndex from '../views/GridViewsIndex.vue'
+// import IndexAll from '../views/GridViewsIndex.vue'
+import IndexAll from '../views/IndexAllList.vue'
 import EmptyView from '../views/EmptyView.vue'
 // import Token from '../views/Token.vue'
 
@@ -12,7 +13,7 @@ const routes = [
       {
         path: '',
         name: 'home__index',
-        component: GridViewsIndex,
+        component: IndexAll,
         children: [
           {
             path: 'tokens/:tokenId',
