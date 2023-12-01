@@ -2,7 +2,7 @@
 import Addr from '../components/Addr.vue';
 const props = defineProps({
   connectedTheme: {
-    default: 'bg-black text-white'
+    default: 'bg-white text-black'
   }
 })
 </script>

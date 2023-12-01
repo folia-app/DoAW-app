@@ -9,7 +9,7 @@
       <ul class="bg-black text-white">
         <template v-for="n in 100">
           <li v-for="token, index in tokens" :key="token.tokenId + n" class="flex items-center">
-            <router-link :to="'/tokens/' + token.tokenId" class="flex-1 min-w-0 flex px-2.5 py-2 gap-3 mouse:hover:bg-[rgba(0,0,0,0.1)]">
+            <router-link :to="'/tokens/' + token.tokenId" class="flex-1 min-w-0 flex px-2.5 py-2 gap-3 mouse:hover:bg-[rgba(255,255,255,0.1)]">
               <div>#{{ ('000' + (index+1)).slice(-3) }}</div>
               <div class="flex-1 min-w-0 truncate uppercase">
                 <span v-for="word in mneuomonic(token.tokenId).split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
@@ -17,7 +17,7 @@
                 </span>
               </div>
             </router-link>
-            <a :href="$store.getters.openSeaLink({account: owner})" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-2.5 py-2 underline mouse:hover:bg-[rgba(0,0,0,0.1)]">
+            <a :href="$store.getters.openSeaLink({account: token.owner})" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-2.5 py-2 underline mouse:hover:bg-[rgba(255,255,255,0.1)]">
               <Addr :address="token.owner" />
             </a>
           </li>

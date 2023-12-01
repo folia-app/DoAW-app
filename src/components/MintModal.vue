@@ -1,10 +1,14 @@
 <template>
   <div class="fixed z-30 overlay flex px-4 py-12 overflow-scroll">
     <!-- card -->
-    <div ref="cardEl" tabindex="0" class="m-auto w-full max-w-[30em] p-4 flex flex-col relative z-10 bg-grau-400 shadow-hard text-center">
+    <div ref="cardEl" tabindex="0" class="m-auto w-full max-w-[30em] p-4 flex flex-col relative z-10 bg-black text-white border ffshadow-hard text-center">
       <div class="flex flex-col gap-6 py-10">
         <h6>MINT DoAW:</h6>
-        <p class="leading-[2] uppercase">{{ words }}</p>
+        <p class="leading-[2] uppercase">
+          <span v-for="word in words.split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
+            {{ word }}
+          </span>
+        </p>
         <div>?</div>
       </div>
       <div class="flex flex-col gap-3">
@@ -16,7 +20,7 @@
           </div>
           <div>ETH</div>
         </div>
-        <ConnectButton connectedTheme="bg-grau-600 text-black" />
+        <ConnectButton connectedTheme="bg-neutral-500 text-black" />
         <button class="flex h-12 items-center justify-center border" :class="{'border-dotted cursor-not-allowed': !canMint}" :disabled="!canMint" @click="mint(props.entropyHex)">
           MINT
         </button>
@@ -29,7 +33,7 @@
         <TxList v-else :txs="txs" />
       </div>
       <!-- X close button -->
-      <button class="absolute top-0 right-0 flex items-center justify-center pl-1 h-10 w-9 mouse:hover:bg-grau-600" aria-label="Close Mint Dialog" @click="emit('close')">X</button>
+      <button class="absolute top-0 right-0 flex items-center justify-center pl-1 h-10 w-9 mouse:hover:bg-neutral-800" aria-label="Close Mint Dialog" @click="emit('close')">X</button>
     </div>
 
     <!-- close btn overlay -->
@@ -44,6 +48,7 @@ import ConnectButton from '../components/ConnectButton.vue'
 import TxList from '../components/TxList.vue'
 import { utils } from 'ethers';
 import hexToBytes from '../utils/hexToBytes';
+import stringToHexColor from '../utils/stringToHexColor';
 
 const props = defineProps(['entropyHex'])
 const emit = defineEmits(['close'])

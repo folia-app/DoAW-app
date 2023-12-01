@@ -38,7 +38,7 @@ export default {
         DEFAULT: '1.75px', // match 16px font weight
       },
       borderColor: {
-        DEFAULT: pen,
+        DEFAULT: 'rgb(220,220,220)',
       },
       width: {
         'full+10': 'calc(100% + 3rem)',
@@ -47,7 +47,7 @@ export default {
         inherit: 'inherit',
       },
       boxShadow: {
-        'hard': '6px 6px 0 black',
+        'hard': '6px 6px 0 gray',
       },
       aspectRatio: {
         'doaw-thumb': '236 / 150',

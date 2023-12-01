@@ -1,13 +1,17 @@
 <template>
-  <article class="fixed overlay z-30 bg-grau-400">
+  <article class="fixed overlay z-30 bg-black text-white">
     <iframe :src="doawIframeUrl({ entropy })" class="absolute overlay" @load="hideInfo(5000)" @click="hideInfo(0)" />
     
-    <aside class="absolute top-0 left-0 w-full bg-grau-400 flex p-2.5 gap-2.5" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
-      <button class="w-14 h-14 border flex items-center justify-center flex-shrink-0 pl-[0.3em]" @click="goBack">X</button>
+    <aside class="absolute top-0 left-0 w-full bg-black text-white flex p-2.5 gap-3" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
+      <button class="px-4 border flex items-center justify-center flex-shrink-0" @click="goBack">&lt;&lt;</button>
       <div class="flex-1 flex flex-col justify-evenly">
-        <div>DOAW: <a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">{{ ('00' + (index+1)).slice(-3) }}</a></div>
+        <div><a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">#{{ ('00' + (index+1)).slice(-3) }}</a></div>
         <div class="truncate">ENTROPY: {{ entropy }}</div>
-        <div class="truncate">MNEUMONIC: {{ mneumonic.toUpperCase() }}</div>
+        <div class="truncate">MNEUMONIC: 
+          <span v-for="word in mneumonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
+            {{ word }}
+          </span>
+        </div>
         <div class="truncate">OWNER: 
           <span v-if="!owner" class="animate-blink">...</span>
           <a v-else :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer">
@@ -61,6 +65,7 @@
   import tokenIdtoEntropy from '../utils/tokenIdtoEntropy';
 import { utils } from 'ethers';
 import { computed } from 'vue';
+import stringToHexColor from '../utils/stringToHexColor';
   let lastRt // : RouteLocation | undefined
   export default {
     methods: {
