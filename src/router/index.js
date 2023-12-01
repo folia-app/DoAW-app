@@ -14,13 +14,6 @@ const routes = [
         path: '',
         name: 'home__index',
         component: IndexAll,
-        children: [
-          {
-            path: 'tokens/:tokenId',
-            name: 'index__token',
-            component: () => import('../views/TokenOverlay.vue')
-          }
-        ]
       },
       {
         path: 'yours',
@@ -107,7 +100,7 @@ const routes = [
   {
     path: '/tokens/:tokenId',
     name: 'token',
-    component: () => import('../views/Token.vue')
+    component: () => import('../views/TokenOverlay.vue')
   },
   {
     path: '/web3connect',
