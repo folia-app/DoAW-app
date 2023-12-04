@@ -7,10 +7,10 @@
       </div>
 
       <!-- (bottom bar) -->
-      <div v-if="isRunning" class="flex px-3 py-2.5 gap-2.5">
+      <div v-if="uiVisible" class="flex px-3 py-2.5 gap-2.5">
         <div class="flex-1 grid grid-cols-4 gap-2">
-          <button v-if="isRunning" class="flex items-center justify-center border" @click="toggleIframePlayback()">
-            {{ isPlaying ? 'PAUSE' : 'PLAY' }}
+          <button class="flex items-center justify-center border" @click="toggleIframePlayback()" :disabled="!isRunning" :class="{'opacity-50 border-dotted': !isRunning}">
+            {{ isPlaying || !isRunning ? 'PAUSE' : 'PLAY' }}
           </button>
           
           <ConnectButton class="h-12" />
@@ -54,7 +54,7 @@
     <MintModal v-if="mintModalVisible" @close="onMintModalClose" :entropyHex="entropyHex" />
     <InfoModal v-if="infoModalVisible" @close="infoModalVisible = false" />
 
-    <section v-if="isRunning" class="min-h-[25vh] flex flex-col">
+    <section v-if="uiVisible" class="min-h-[25vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
       <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
         <div>LIST:</div>
@@ -95,6 +95,7 @@ function openMintModal () {
   mintModalVisible.value = true
 }
 
+const uiVisible = ref(localStorage.getItem('hasStarted') ?? false)
 const isRunning = ref(false)
 const isPlaying = ref(false)
 const entropyHex = ref()
@@ -106,6 +107,8 @@ function listenToMessages (event) {
     if (event.data === 'run') {
       isRunning.value = true
       isPlaying.value = true
+      uiVisible.value = true
+      localStorage.setItem('hasStarted', 1)
     } else {
       isPlaying.value = !isPlaying.value
       entropyHex.value = event.data
