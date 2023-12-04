@@ -20,8 +20,8 @@
           </div>
           <div>ETH</div>
         </div>
-        <ConnectButton connectedTheme="bg-neutral-500 text-black" />
-        <button class="flex h-12 items-center justify-center border" :class="{'border-dotted cursor-not-allowed': !canMint}" :disabled="!canMint" @click="mint(props.entropyHex)">
+        <ConnectButton connectedTheme="bg-neutral-900 text-white" />
+        <button class="flex h-12 items-center justify-center border" :class="{'border-dotted opacity-50 cursor-not-allowed': !canMint}" :disabled="!canMint" @click="mint(props.entropyHex)">
           MINT
         </button>
         

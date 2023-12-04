@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { onUnmounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
   import doawIframeUrl from '../utils/doawIframeUrl';
   import Addr from '../components/Addr.vue';
@@ -57,11 +57,23 @@
     infoVisible.value = true
   }
 
-  function hideInfo (delay) {
+  function hideInfo (delay = 0) {
     console.log('hide')
     clearTimeout(hideInfoTimeout)
     hideInfoTimeout = setTimeout(() => { infoVisible.value = false }, delay)
   }
+
+  function listenToMessages (event) { 
+    // Handle the received message data
+    if (event.origin === import.meta.env.VITE_SERVER) {
+      console.log('iframe message:', event.data)
+      if (event.data === 'run') {
+        hideInfo()
+      }
+    }
+  }
+  window.addEventListener('message', listenToMessages)
+  onUnmounted(() => window.removeEventListener('message', listenToMessages))
 </script>
 
 <script>

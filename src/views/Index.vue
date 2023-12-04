@@ -6,9 +6,17 @@
         <iframe ref="iframeEl" :src="iframeUrl" class="absolute overlay" />
       </div>
 
-      <!-- bottom bar -->
-      <div class="flex px-3 py-2.5 gap-2.5">
-        <div class="flex-1 grid grid-cols-3 gap-2">
+      <!-- (bottom bar) -->
+      <div v-if="isRunning" class="flex px-3 py-2.5 gap-2.5">
+        <div class="flex-1 grid grid-cols-4 gap-2">
+          <button v-if="isRunning" class="flex items-center justify-center border" @click="toggleIframePlayback()">
+            {{ isPlaying ? 'PAUSE' : 'PLAY' }}
+          </button>
+          
+          <ConnectButton class="h-12" />
+          <button class="flex items-center justify-center border" @click="onMintButtonClick" :disabled="!isRunning" :class="{'border-dotted opacity-50 cursor-not-allowed': !isRunning}">
+            MINT
+          </button>
           <div class="flex flex-col justify-evenly">
             <div class="w-full flex justify-between">
               <div>MINTED:</div>
@@ -27,10 +35,6 @@
               <div>&nbsp;ETH</div>
             </div>
           </div>
-          <ConnectButton class="h-12" />
-          <button class="flex items-center justify-center border" @click="openMintModal">
-            MINT
-          </button>
         </div>
 
         <button class="w-12 h-12 flex-shrink-0 flex items-center justify-center border">
@@ -47,7 +51,7 @@
       <!-- <div class="h-10"></div> -->
     </section>
     
-    <section class="min-h-[25vh] flex flex-col">
+    <section v-if="isRunning" class="min-h-[25vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
       <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
         <div>LIST:</div>
@@ -64,7 +68,7 @@
     
     <!-- modal -->
     <template v-if="mintModalVisible">
-      <MintModal @close="mintModalVisible = false" :entropyHex="entropyHex" />
+      <MintModal @close="onMintModalClose" :entropyHex="entropyHex" />
     </template>
   </article>
 </template>
@@ -90,18 +94,50 @@ function openMintModal () {
   mintModalVisible.value = true
 }
 
+const isRunning = ref(false)
+const isPlaying = ref(false)
 const entropyHex = ref()
 
 function listenToMessages (event) { 
   // Handle the received message data
   if (event.origin === iframeUrl) {
-    entropyHex.value = event.data
-    console.log('entropy:', entropyHex.value)
+    console.log('iframe message:', event.data)
+    if (event.data === 'run') {
+      isRunning.value = true
+      isPlaying.value = true
+    } else {
+      isPlaying.value = !isPlaying.value
+      entropyHex.value = event.data
+    }
+  }
+}
+
+function toggleIframePlayback () {
+  iframeEl.value.contentWindow.postMessage('pause', iframeUrl)
+}
+
+let wasPlaying
+function onMintButtonClick () {
+  wasPlaying = isPlaying.value
+  // pause iframe?
+  if (isPlaying.value) {
+    toggleIframePlayback()
+  }
+  // should have hex?
+  setTimeout(() => {
+    // console.log(entropyHex.value)
+    openMintModal()
+  }, 100)
+}
+
+function onMintModalClose () {
+  mintModalVisible.value = false
+  if (wasPlaying && !isPlaying.value) {
+    toggleIframePlayback()
   }
 }
 
 window.addEventListener('message', listenToMessages)
-
 onUnmounted(() => window.removeEventListener('message', listenToMessages))
 </script>
 

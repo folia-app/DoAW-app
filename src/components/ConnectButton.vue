@@ -21,7 +21,7 @@ const props = defineProps({
   </template> 
   <template v-else>
     <button class="flex h-12 items-center justify-center border" @click="$store.dispatch('connect')">
-      CONNECT
+      CONNECT WALLET
     </button>
   </template>
 </template>
