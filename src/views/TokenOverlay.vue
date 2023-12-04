@@ -43,32 +43,33 @@
   const entropy = tokenIdtoEntropy(tokenId)
   const mneumonic = computed(() => utils.entropyToMnemonic(hexToBytes(entropy)))
 
-  // info visibility
+  const isRunning = ref(false)
+  const isPlaying = ref(false)
+
   const infoVisible = ref(true)
   let hideInfoTimeout
-  // function onMousemove () {
-  //   console.log('movi')
-  //   clearTimeout(hideInfoTimeout)
-  //   infoVisible.value = true
-  //   hideInfo(0)
-  // }
+
   function showInfo() {
     clearTimeout(hideInfoTimeout)
     infoVisible.value = true
   }
 
   function hideInfo (delay = 0) {
+    if (!isPlaying.value) return
     console.log('hide')
     clearTimeout(hideInfoTimeout)
     hideInfoTimeout = setTimeout(() => { infoVisible.value = false }, delay)
   }
 
   function listenToMessages (event) { 
-    // Handle the received message data
     if (event.origin === import.meta.env.VITE_SERVER) {
-      console.log('iframe message:', event.data)
       if (event.data === 'run') {
-        hideInfo()
+        isRunning.value = true
+        isPlaying.value = true
+        hideInfo(1000)
+      } else {
+        isPlaying.value = !isPlaying.value
+        return !isPlaying.value ? showInfo() : hideInfo()
       }
     }
   }
