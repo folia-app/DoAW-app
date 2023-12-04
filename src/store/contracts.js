@@ -42,7 +42,7 @@ async function init() {
   nftContract.queryFilter(nftContract.filters.Transfer(), 0)
     .then((events) => {
       store.commit('NFTS_LOADED')
-      events.forEach(processNFTTransfer)
+      events.forEach((event, index) => processNFTTransfer(event, index))
     })
 
   // listen for transfers
@@ -59,12 +59,12 @@ function wrappedProcessNFTTransfer(...args) {
   processNFTTransfer({ args })
 }
 
-function processNFTTransfer(event) {
+function processNFTTransfer(event, index) {
   var from = event.args[0]
   var to = event.args[1].toString()
   var tokenId = event.args[2].toString() // ethers.BigNumber.from(event.args[2])
   if (from === ethers.constants.AddressZero) {
-    const nft = { tokenId, owner: to }
+    const nft = { tokenId, owner: to, index: index + 1 }
     store.commit('ADD_NFT', nft)
   } else {
     let nft = store.state.nfts.find(nft => nft.tokenId === tokenId.toString())
