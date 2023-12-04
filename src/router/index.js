@@ -18,7 +18,7 @@ const routes = [
       {
         path: 'yours',
         name: 'home__yours',
-        component: EmptyView,
+        component: () => import('../views/IndexYours.vue'),
       },
       {
         path: 'collectors',

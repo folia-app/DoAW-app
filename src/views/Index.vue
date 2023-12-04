@@ -52,7 +52,7 @@
       <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
         <div>LIST:</div>
         <router-link to="/" class="px-[0.75em] pt-px">ALL</router-link>
-        <router-link to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
+        <router-link v-if="$store.getters.address" to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
         <router-link to="/collectors" class="px-[0.75em] pt-px">COLLECTORS</router-link>
       </nav>
       
@@ -109,5 +109,12 @@ onUnmounted(() => window.removeEventListener('message', listenToMessages))
 nav .router-link-exact-active{
   background:white;
   color:black;
+}
+
+@screen mouse {
+  nav :not(.router-link-exact-active):hover{
+    background: white;
+    color:black;
+  }
 }
 </style>
