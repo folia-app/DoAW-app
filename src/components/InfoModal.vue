@@ -13,7 +13,7 @@
     <li>MINT a DoAW (and win)</li>
   </ol>
   <footer class="flex justify-evenly mb-2">
-    <a :href="$store.getters.etherscanLink()" class="underline" target="_blank" rel="noopener noreferrer">CONTRACT</a>
+    <a :href="$store.getters.etherscanLink({})" class="underline" target="_blank" rel="noopener noreferrer">CONTRACT</a>
     <a :href="$store.getters.openSeaLink({})" class="underline" target="_blank" rel="noopener noreferrer">OPENSEA</a>
   </footer>
 </Modal>

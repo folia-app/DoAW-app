@@ -99,10 +99,11 @@ const store = createStore({
     mintCount: (state) => state.nfts?.length,
     isSoldOut: (state) => state.maxSupply && state.nfts?.length >= state.maxSupply,
     contractAddress: () => NFTContractDeploy.networks[network].address,
-    etherscanLink: (state, getters) => hash => {
+    etherscanLink: (state, getters) => ({ hash, address }) => {
       let url = `https://${state.network != 'homestead' ? state.network + '.' : ''}etherscan.io`
       url += hash ? `/tx/${hash}`
-        : `/address/${getters.contractAddress}`
+        : address ? `/address/${address}`
+          : `/address/${getters.contractAddress}`
       return url
     },
     openSeaLink: (state, getters) => ({ tokenId, account }) => {

@@ -11,12 +11,12 @@
           <div>(OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>)</div>
         </div>
         <div class="truncate">SEEDPHRASE: 
-          <span v-for="word in mneumonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
+          <span v-for="word in mnemonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
             {{ word }}
           </span>
         </div>
-        <div class="truncate">PRIVATEKEY_0: m/44'/60'/0'/0/0/0 0xcf2eE9dAA3d6293BcdF6e7619F93922c26384C09</div>
-        <div class="truncate">ACCOUNT_0: <span class="underline">{{owner}}</span></div>
+        <div class="truncate">PRIVATEKEY_0: {{ privateKey0 }}</div>
+        <div class="truncate">ACCOUNT_0: <a :href="store.getters.etherscanLink({ address: address0 })" class="underline" target="_blank" rel="noopener noreferrer">{{address0}}</a></div>
         <!-- <div class="truncate">OWNER: 
           <span v-if="!owner" class="animate-blink">...</span>
           <a v-else :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer">
@@ -29,19 +29,29 @@
 </template>
 
 <script setup>
-  import { onUnmounted, ref } from 'vue';
+  import { onUnmounted, ref, computed } from 'vue';
   import { useRoute } from 'vue-router';
   import doawIframeUrl from '../utils/doawIframeUrl';
   import Addr from '../components/Addr.vue';
   import store from '../store'
+  import { ethers } from 'ethers'
+  import hexToBytes from '../utils/hexToBytes';
+  import tokenIdtoEntropy from '../utils/tokenIdtoEntropy';
+  import stringToHexColor from '../utils/stringToHexColor';
 
   const route = useRoute()
   const tokenId = route.params.tokenId.toString()
-  const owner = computed(() => store.state.nfts?.find(nft => nft.tokenId === tokenId)?.owner)
-  const index = computed(() => store.state.nfts?.findIndex(nft => nft.tokenId === tokenId))
 
   const entropy = tokenIdtoEntropy(tokenId)
-  const mneumonic = computed(() => utils.entropyToMnemonic(hexToBytes(entropy)))
+  const mnemonic = ethers.utils.entropyToMnemonic(hexToBytes(entropy))
+
+  const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic)
+  const privateKey0 = hdNode.derivePath(ethers.utils.defaultPath).privateKey
+  const wallet = new ethers.Wallet(privateKey0)
+  const address0 = wallet.address
+
+  const owner = computed(() => store.state.nfts?.find(nft => nft.tokenId === tokenId)?.owner)
+  const index = computed(() => store.state.nfts?.findIndex(nft => nft.tokenId === tokenId))
 
   const isRunning = ref(false)
   const isPlaying = ref(false)
@@ -79,11 +89,6 @@
 
 <script>
   // import { RouteLocation } from 'vue-router';
-  import hexToBytes from '../utils/hexToBytes';
-  import tokenIdtoEntropy from '../utils/tokenIdtoEntropy';
-import { utils } from 'ethers';
-import { computed } from 'vue';
-import stringToHexColor from '../utils/stringToHexColor';
   let lastRt // : RouteLocation | undefined
   export default {
     methods: {
