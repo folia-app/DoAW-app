@@ -21,7 +21,7 @@ const routes = [
         component: () => import('../views/IndexYours.vue'),
       },
       {
-        path: 'collectors',
+        path: 'owners',
         name: 'home__collectors',
         component: () => import('../views/IndexCollectors.vue')
       },

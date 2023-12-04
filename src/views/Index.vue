@@ -60,7 +60,7 @@
         <div>LIST:</div>
         <router-link to="/" class="px-[0.75em] pt-px">{{ isLoggedIn ? 'ALL' : 'WALLETS' }}</router-link>
         <router-link v-if="isLoggedIn" to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
-        <router-link to="/collectors" class="px-[0.75em] pt-px">COLLECTORS</router-link>
+        <router-link to="/owners" class="px-[0.75em] pt-px">OWNERS</router-link>
       </nav>
       
       <!-- grid pages -->

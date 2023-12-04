@@ -7,6 +7,7 @@
     ~ presented by <a href="https://folia.app" class="underline" target="_blank">folia</a> ~<br>
   </header>
   <ol class="list-decimal border p-2 text-left my-6 pl-12">
+    <li>click START to start the engine</li>
     <li>PAUSE the engine on your favorite <span v-for="(char, i) in ('SEEDPHRASE').split('')" :key="i" :style="{color: stringToHexColor(Array(6).fill(char).join())}">{{ char }}</span></li>
     <li>CONNECT your ethereum wallet</li>
     <li>MINT a DoAW (and win)</li>

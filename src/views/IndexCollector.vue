@@ -4,7 +4,7 @@
   </nav>
   <div class="flex bg-neutral-800 text-white sticky top-10 z-20">
     <div class="flex-1 flex relative px-2.5 h-10 items-center gap-3">
-      <div>COLLECTOR:</div>
+      <div>OWNER:</div>
       <div class="flex-1 min-w-0 truncate">
         <a :href="$store.getters.openSeaLink({account: route.params.address})" target="_blank" rel="noopener noreferrer" class="underline">
           <Addr :address="route.params.address" />
