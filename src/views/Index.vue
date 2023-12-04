@@ -37,18 +37,18 @@
           ?
         </button>
 
-        <button class="w-12 h-12 flex-shrink-0 flex items-center justify-center border">
+        <!-- <button class="w-12 h-12 flex-shrink-0 flex items-center justify-center border">
           <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.04492 0.300781V2.01465H7.33203V3.72852H5.61816V5.44238H3.9043H2.19043H0.476562V7.15625V8.87012V10.584H2.19043H3.9043H5.61816V12.2979H7.33105V14.0117H9.04492H9.0459V15.7256H10.7598V14.0117H10.7588V12.2979V10.584V8.87012V7.15625V5.44238V3.72852V2.01465V0.300781H9.04492Z" fill="black"/>
             <rect x="17.6143" y="7.15674" width="1.71289" height="5.1416" transform="rotate(90 17.6143 7.15674)" fill="black"/>
           </svg>
-        </button>
+        </button> -->
       </div>
-      <div class="h-10"></div>
+      <!-- <div class="h-10"></div> -->
     </section>
 
     <!-- sticky-top grid nav bar -->
-    <nav id="index" class="-mt-10 sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
+    <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
       <div>LIST:</div>
       <router-link to="/" class="px-[0.75em] pt-px">ALL</router-link>
       <router-link to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>

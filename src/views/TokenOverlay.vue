@@ -2,22 +2,27 @@
   <article class="fixed overlay z-30 bg-black text-white">
     <iframe :src="doawIframeUrl({ entropy })" class="absolute overlay" @load="hideInfo(5000)" @click="hideInfo(0)" />
     
-    <aside class="absolute top-0 left-0 w-full bg-black text-white flex p-2.5 gap-3" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
+    <aside class="absolute bottom-0 left-0 w-full bg-black text-white flex p-2.5 gap-3" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
       <button class="px-4 border flex items-center justify-center flex-shrink-0" @click="goBack">&lt;&lt;</button>
       <div class="flex-1 flex flex-col justify-evenly">
-        <div><a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">#{{ ('00' + (index+1)).slice(-3) }}</a></div>
-        <div class="truncate">ENTROPY: {{ entropy }}</div>
-        <div class="truncate">MNEUMONIC: 
+        <div class="flex gap-3">
+          <div>DeadOrAliveWallet:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">#{{ ('00' + (index+1)).slice(-3) }}</a></div>
+          
+          <div>(OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>)</div>
+        </div>
+        <div class="truncate">SEEDPHRASE: 
           <span v-for="word in mneumonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
             {{ word }}
           </span>
         </div>
-        <div class="truncate">OWNER: 
+        <div class="truncate">PRIVATEKEY_0: m/44'/60'/0'/0/0/0 0xcf2eE9dAA3d6293BcdF6e7619F93922c26384C09</div>
+        <div class="truncate">ACCOUNT_0: <span class="underline">{{owner}}</span></div>
+        <!-- <div class="truncate">OWNER: 
           <span v-if="!owner" class="animate-blink">...</span>
           <a v-else :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer">
             <Addr  :address="owner" />
           </a>
-        </div>
+        </div> -->
       </div>
     </aside>
   </article>
