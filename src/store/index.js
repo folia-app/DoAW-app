@@ -111,7 +111,7 @@ const store = createStore({
         return `${domain}/assets/${state.network === 'homestead' ? 'ethereum' : network}/${getters.contractAddress}/${tokenId}`
       }
       return account ? `${domain}/${account}`
-        : domain
+        : domain + '/collection/' + import.meta.env.VITE_OPENSEA_COLLECTION_NAME
     }
   },
   mutations: {

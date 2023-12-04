@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <button class="w-12 h-12 flex-shrink-0 flex items-center justify-center border">
+        <button class="w-12 h-12 flex-shrink-0 flex items-center justify-center border" @click="infoModalVisible = true">
           ?
         </button>
 
@@ -50,13 +50,16 @@
       </div>
       <!-- <div class="h-10"></div> -->
     </section>
-    
+
+    <MintModal v-if="mintModalVisible" @close="onMintModalClose" :entropyHex="entropyHex" />
+    <InfoModal v-if="infoModalVisible" @close="infoModalVisible = false" />
+
     <section v-if="isRunning" class="min-h-[25vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
       <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
         <div>LIST:</div>
-        <router-link to="/" class="px-[0.75em] pt-px">ALL</router-link>
-        <router-link v-if="$store.getters.address" to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
+        <router-link to="/" class="px-[0.75em] pt-px">{{ isLoggedIn ? 'ALL' : 'WALLETS' }}</router-link>
+        <router-link v-if="isLoggedIn" to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
         <router-link to="/collectors" class="px-[0.75em] pt-px">COLLECTORS</router-link>
       </nav>
       
@@ -64,31 +67,29 @@
       <div class="flex-1">
         <router-view></router-view>
       </div>
-    </section>
-    
-    <!-- modal -->
-    <template v-if="mintModalVisible">
-      <MintModal @close="onMintModalClose" :entropyHex="entropyHex" />
-    </template>
+    </section>   
   </article>
 </template>
 
 <script setup>
 import ConnectButton from '../components/ConnectButton.vue'
+import InfoModal from '../components/InfoModal.vue';
 import MintModal from '../components/MintModal.vue'
 import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
 
 const iframeUrl = import.meta.env.VITE_SERVER
 
+const isLoggedIn = computed(() => store.getters.address)
 const mintCount = computed(() => store.getters.mintCount)
 const maxSupply = computed(() => store.state.maxSupply)
 
-store.dispatch('getMaxSupply')
-store.dispatch('getPrice')
+setTimeout(() => store.dispatch('getMaxSupply'), 1100)
+setTimeout(() => store.dispatch('getPrice'), 2200)
 
 const iframeEl = ref()
 const mintModalVisible = ref(false)
+const infoModalVisible = ref(false)
 
 function openMintModal () {
   mintModalVisible.value = true
