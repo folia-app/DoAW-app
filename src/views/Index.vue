@@ -46,18 +46,22 @@
       </div>
       <!-- <div class="h-10"></div> -->
     </section>
-
-    <!-- sticky-top grid nav bar -->
-    <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
-      <div>LIST:</div>
-      <router-link to="/" class="px-[0.75em] pt-px">ALL</router-link>
-      <router-link to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
-      <router-link to="/owners" class="px-[0.75em] pt-px">OWNERS</router-link>
-    </nav>
     
-    <!-- grid pages -->
-    <router-view></router-view>
-
+    <section class="min-h-[25vh] flex flex-col">
+      <!-- sticky-top grid nav bar -->
+      <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
+        <div>LIST:</div>
+        <router-link to="/" class="px-[0.75em] pt-px">ALL</router-link>
+        <router-link to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
+        <router-link to="/collectors" class="px-[0.75em] pt-px">COLLECTORS</router-link>
+      </nav>
+      
+      <!-- grid pages -->
+      <div class="flex-1">
+        <router-view></router-view>
+      </div>
+    </section>
+    
     <!-- modal -->
     <template v-if="mintModalVisible">
       <MintModal @close="mintModalVisible = false" :entropyHex="entropyHex" />

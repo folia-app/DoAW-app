@@ -19,31 +19,17 @@ const routes = [
         path: 'yours',
         name: 'home__yours',
         component: EmptyView,
-        children: [
-          {
-            path: 'tokens/:tokenId',
-            name: 'yours__token',
-            component: () => import('../views/TokenOverlay.vue')
-          }
-        ]
+      },
+      {
+        path: 'collectors',
+        name: 'home__collectors',
+        component: () => import('../views/IndexCollectors.vue')
       },
       {
         path: ':address',
         name: 'home__collector',
-        component: EmptyView,
-        children: [
-          {
-            path: 'tokens/:tokenId',
-            name: 'collector__token',
-            component: () => import('../views/TokenOverlay.vue')
-          }
-        ]
+        component: () => import('../views/IndexCollector.vue'),
       },
-      {
-        path: 'owners',
-        name: 'home__owners',
-        component: EmptyView
-      }
     ],
     // children: [
     //   {

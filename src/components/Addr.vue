@@ -30,6 +30,7 @@ observer.inline.addr(:class="{'addr--is-you': isYou}" @visible="resolveAddress")
       }
     },
     methods: {
+      isAddress: utils.isAddress,
       resolveAddress () {
         if (this.isYou && this.youOn) return
   
