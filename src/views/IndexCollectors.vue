@@ -7,8 +7,8 @@
     </template>
     <template v-else>
       <ul>
-        <li v-for="(row, index) in leaderboard" :key="row.address" class="flex">
-          <router-link :to="'/' + row.address" class="flex-1 min-w-0 flex px-2.5 py-2 gap-3 mouse:hover:bg-[rgba(255,255,255,0.1)]">
+        <li v-for="(row, index) in leaderboard" :key="row.address">
+          <router-link :to="'/' + row.address" class="px-2.5 h-9 flex items-center gap-3 mouse:hover:bg-[rgba(255,255,255,0.1)]">
             <div>#{{ index+1 }}</div>
             <div class="flex-1 min-w-0 truncate">
               <Addr :address="row.address" />

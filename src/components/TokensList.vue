@@ -12,7 +12,7 @@
       <ul class="bg-black text-white">
         <template v-for="n in 1">
           <li v-for="token in props.tokens" :key="token.tokenId + '_' + n" class="flex">
-            <router-link :to="'/tokens/' + token.tokenId" class="flex-1 min-w-0 flex px-2.5 h-10 items-center gap-3 mouse:hover:bg-[rgba(255,255,255,0.1)]">
+            <router-link :to="'/tokens/' + token.tokenId" class="flex-1 min-w-0 flex px-2.5 h-9 items-center gap-3 mouse:hover:bg-[rgba(255,255,255,0.1)]">
               <div>#{{ ('000' + (token.index)).slice(-3) }}</div>
               <div class="uppercase">
                 <span v-for="word in mneuomonic(token.tokenId).split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
