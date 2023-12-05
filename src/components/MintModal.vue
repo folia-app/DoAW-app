@@ -24,17 +24,17 @@
     </button>
     
     <!-- (mint status) -->
-    <div v-if="status" class="py-1" :class="{'bg-red-300': status.type === 'error', 'bg-green-300': status.type === 'success', 'bg-grau-600': !status.type, 'animate-blink-slow': status.message.includes('...')}">
+    <div v-if="status" class="py-1 text-black" :class="{'bg-red-300': status.type === 'error', 'bg-green-300': status.type === 'success', 'bg-grau-200': !status.type, 'animate-blink-slow': status.message.includes('...')}">
       {{ status.message }}
     </div>
     <!-- (tx msgs...) -->
-    <TxList v-else :txs="txs" />
+    <TxList v-else :txs="txs" @viewMint="onViewMint" />
   </div>
 </Modal>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import store from '../store';
 import ConnectButton from '../components/ConnectButton.vue'
 import TxList from '../components/TxList.vue'
@@ -42,6 +42,7 @@ import { utils } from 'ethers';
 import hexToBytes from '../utils/hexToBytes';
 import stringToHexColor from '../utils/stringToHexColor';
 import Modal from './Modal.vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps(['entropyHex'])
 const emit = defineEmits('close')
@@ -79,7 +80,16 @@ async function mint(entropy) {
     //   if (status.value.message === result.message)
     //     status.value = null
     // }, 5000)
-    // store.dispatch('popup', popup)
   }
+}
+
+// close modal if route changes (click to "view" your collection from mint success tx)
+const route = useRoute()
+const router = useRouter()
+watch(() => route.path, () => emit('close'))
+
+function onViewMint () {
+  emit('close')
+  router.push('/yours#index')
 }
 </script>

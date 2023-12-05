@@ -129,6 +129,8 @@ const store = createStore({
       if (state.nfts === undefined) {
         state.nfts = []
       }
+      // add index of mint?
+      nft.index = state.nfts.length + 1
       state.nfts.push(nft)
     },
     UPDATE_NFT(state, nft) {
@@ -165,6 +167,12 @@ const store = createStore({
       //     state.pending.splice(index, 1)
       //   }
       // }, 5000)
+    },
+    REMOVE_TX(state, txHash) {
+      const index = state.pending.findIndex(pendingTx => pendingTx.txHash === txHash)
+      if (index > -1) {
+        state.pending.splice(index, 1)
+      }
     },
     SET_DATE_PUBLIC (state, milliseconds) {
       state.datePublic = milliseconds

@@ -54,9 +54,9 @@
     <MintModal v-if="mintModalVisible" @close="onMintModalClose" :entropyHex="entropyHex" />
     <InfoModal v-if="infoModalVisible" @close="infoModalVisible = false" />
 
-    <section v-if="uiVisible" class="min-h-[25vh] flex flex-col">
+    <section v-if="uiVisible" id="index" class="min-h-[25vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
-      <nav id="index" class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
+      <nav class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
         <div>LIST:</div>
         <router-link to="/" class="px-[0.75em] pt-px">{{ isLoggedIn ? 'ALL' : 'WALLETS' }}</router-link>
         <router-link v-if="isLoggedIn" to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
