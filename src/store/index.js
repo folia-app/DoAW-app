@@ -244,16 +244,19 @@ const store = createStore({
           throw e
         })
     },
-    async mint({ getters, dispatch }, entropy) {
+    async mint({ getters, dispatch }, { entropy, quantity = 1 }) {
       await dispatch('checkNetwork')
-      const value = await dispatch('getPrice')
+      const wei = await dispatch('getPrice')
+      const value = wei.mul(quantity)
       let userBalance = getters.balance?.ETH
+
       if (!userBalance) {
         const infuraProvider = new ethers.providers.InfuraProvider(network, infuraKey)
         userBalance = (await infuraProvider.getBalance(getters.address))
       } else {
         userBalance = ethers.utils.parseEther(userBalance)
       }
+
       if (userBalance.lt(value)) {
         const missing = getters.weiToETH(value.sub(userBalance)).substring(0, 6)
         throw new Error(`Sorry, your wallet balance is ${missing.toString()}ETH too low to mint.`)
@@ -309,7 +312,7 @@ const store = createStore({
             // mintAllowlist
             try {
               console.log('mint allow list')
-              const tx = await nftContract.mintAllowList(amount, hexProof, { value })
+              const tx = await nftContract.mintAllowList(quantity, hexProof, { value })
               return dispatch('handlePendingTx', { name: 'mint', tx })
             } catch (e) {
               if (e.toString().indexOf("rejected transaction") > -1) {
@@ -323,8 +326,14 @@ const store = createStore({
       }
 
       try {
-        console.log('mint public with entropy')
-        const tx = await nftContract['mintWithEntropy(address,uint256)'](getters.address, entropy, { value })
+        let tx
+        if (entropy) {
+          console.log('mint public with entropy')
+          tx = await nftContract['mintWithEntropy(address,uint256)'](getters.address, entropy, { value })
+        } else {
+          console.log('mint public random:', quantity)
+          tx = await nftContract['mint(address,uint256)'](getters.address, quantity, { value })
+        }
         return dispatch('handlePendingTx', { name: 'mint', tx })
       } catch (e) {
         if (e.toString().indexOf("rejected transaction") > -1) {

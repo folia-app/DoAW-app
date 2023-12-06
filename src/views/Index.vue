@@ -9,7 +9,7 @@
       <!-- (bottom bar) -->
       <div v-if="uiVisible" class="flex px-3 py-2.5 gap-2.5">
         <div class="flex-1 grid grid-cols-4 gap-2">
-          <ConnectButton class="h-12" />
+          <ConnectButton />
           <button class="flex items-center justify-center border" @click="toggleIframePlayback()" :disabled="!isRunning" :class="{'opacity-50 border-dotted': !isRunning}">
             {{ isPlaying || !isRunning ? 'PAUSE' : 'PLAY' }}
           </button>
