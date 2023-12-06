@@ -10,10 +10,13 @@
           
           <div>(OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>)</div>
         </div>
-        <div class="truncate">SEEDPHRASE: 
-          <span v-for="word in mnemonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
-            {{ word }}
-          </span>
+        <div class="flex gap3">
+          <div>SEEDPHRASE:</div>
+          <div>
+            <span v-for="word in mnemonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
+              {{ word }}
+            </span>
+          </div>
         </div>
         <div class="truncate">PRIVATEKEY_0: {{ privateKey0 }}</div>
         <div class="truncate">ACCOUNT_0: <a :href="store.getters.etherscanLink({ address: address0 })" class="underline" target="_blank" rel="noopener noreferrer">{{address0}}</a></div>

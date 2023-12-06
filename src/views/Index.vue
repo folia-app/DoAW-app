@@ -14,7 +14,7 @@
             {{ isPlaying || !isRunning ? 'PAUSE' : 'PLAY' }}
           </button>
           
-          <button class="flex items-center justify-center border" @click="onMintButtonClick" :disabled="!isRunning" :class="{'border-dotted opacity-50 cursor-not-allowed': !isRunning}">
+          <button class="flex items-center justify-center border" @click="onMintButtonClick">
             MINT
           </button>
           <div class="flex flex-col justify-evenly">
@@ -84,8 +84,9 @@ const isLoggedIn = computed(() => store.getters.address)
 const mintCount = computed(() => store.getters.mintCount)
 const maxSupply = computed(() => store.state.maxSupply)
 
-setTimeout(() => store.dispatch('getMaxSupply'), 1100)
-setTimeout(() => store.dispatch('getPrice'), 2200)
+// delay for rpc.sepolia (rabby wallet)
+setTimeout(() => store.dispatch('getMaxSupply'), 500)
+setTimeout(() => store.dispatch('getPrice'), 1000)
 
 const iframeEl = ref()
 const mintModalVisible = ref(false)
@@ -136,7 +137,7 @@ function onMintButtonClick () {
 
 function onMintModalClose () {
   mintModalVisible.value = false
-  if (wasPlaying && !isPlaying.value) {
+  if (isRunning.value && wasPlaying && !isPlaying.value) {
     toggleIframePlayback()
   }
 }

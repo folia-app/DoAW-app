@@ -49,6 +49,9 @@ export default {
       boxShadow: {
         'hard': '6px 6px 0 gray',
       },
+      minHeight: {
+        9: '2.25rem',
+      },
       aspectRatio: {
         'doaw-thumb': '236 / 150',
       },

@@ -34,7 +34,7 @@
         address: owner,
         count: store.state.nfts.filter(token => token.owner === owner).length
       }))
-      owners = owners.sort((a, b) => a.count - b.count)
+      owners = owners.sort((a, b) => b.count - a.count)
     }
     return owners
   })

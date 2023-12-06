@@ -2,15 +2,20 @@
 <Modal maxWidth="30em">
   <div class="flex flex-col gap-6 py-10">
     <h6 class="pl-2">MINT DoAW:</h6>
-    <p class="leading-[2] uppercase">
-      <span v-for="word in words.split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
-        {{ word }}
-      </span>
+    <p v-if="!words" class="text-center text-yellow-400">
+      click <br> "DoAW START" <br> to generate <br> a SEEDPHRASE
     </p>
-    <div class="-mt-0.5">?</div>
-    <!-- <div class="flex justify-center">
-      <button class="p-2 -my-2"><SvgRefresh class="h-[1.3em]" /></button>
-    </div> -->
+    <template v-else>
+      <p class="leading-[2] uppercase">
+        <span v-for="word in words.split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
+          {{ word }}
+        </span>
+      </p>
+      <div class="-mt-0.5">?</div>
+      <!-- <div class="flex justify-center">
+        <button class="p-2 -my-2"><SvgRefresh class="h-[1.3em]" /></button>
+      </div> -->
+    </template>
   </div>
   <div class="flex flex-col gap-3">
     <div>
@@ -18,7 +23,8 @@
       <div class="flex gap-1">
         <div>PRICE:</div>
         <div class="flex-1 min-w-0 truncate text-right">
-          {{ $store.getters.weiToETH($store.state.price) }}
+          <span v-if="!store.state.price" class="animate-blink">...</span>
+          <template v-else>{{store.getters.weiToETH(store.state.price)}}</template>
         </div>
         <div>ETH</div>
       </div>
@@ -31,7 +37,7 @@
       </div> -->
     </div>
     <ConnectButton v-if="!isSoldOut" connectedTheme="bg-neutral-900 text-white" />
-    <button class="flex h-12 items-center justify-center border" :class="{'border-dotted opacity-50 cursor-not-allowed': !canMint}" :disabled="!canMint" @click="mint({ entropy: props.entropyHex })">
+    <button class="flex h-12 items-center justify-center border" :class="{'border-dotted opacity-50 cursor-not-allowed': !canMint || !props.entropyHex}" :disabled="!canMint || !props.entropyHex" @click="mint({ entropy: props.entropyHex })">
       {{ isSoldOut ? 'SOLD OUT' : 'MINT' }}
     </button>
     <div v-if="!isSoldOut" class="flex border h-12" :class="{'border-dotted opacity-50 cursor-not-allowed': !canMint}">
