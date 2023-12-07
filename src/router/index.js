@@ -9,11 +9,7 @@ import IndexAll from '../views/IndexAllList.vue'
 const routes = [
   {
     path: '/',
-    component: Splash,
-  },
-  {
-    path: '/index',
-    component: Index,
+    component: import.meta.env.VITE_SPLASH ? Splash : Index,
     children: [
       {
         path: '',
