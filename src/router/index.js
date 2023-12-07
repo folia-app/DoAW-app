@@ -1,48 +1,48 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Index from '../views/Index.vue'
+// import Index from '../views/Index.vue'
 import Splash from '../views/Splash.vue'
 // import IndexAll from '../views/GridViewsIndex.vue'
-import IndexAll from '../views/IndexAllList.vue'
+// import IndexAll from '../views/IndexAllList.vue'
 // import EmptyView from '../views/EmptyView.vue'
 // import Token from '../views/Token.vue'
 
 const routes = [
   {
     path: '/',
-    component: import.meta.env.VITE_SPLASH ? Splash : Index,
-    children: [
-      {
-        path: '',
-        name: 'home__index',
-        component: IndexAll,
-      },
-      {
-        path: 'yours',
-        name: 'home__yours',
-        component: () => import('../views/IndexYours.vue'),
-      },
-      {
-        path: 'owners',
-        name: 'home__collectors',
-        component: () => import('../views/IndexCollectors.vue')
-      },
-      {
-        path: ':address',
-        name: 'home__collector',
-        component: () => import('../views/IndexCollector.vue'),
-      },
-    ]
+    component: Splash, // import.meta.env.VITE_SPLASH ? Splash : Index,
+    // children: [
+    //   {
+    //     path: '',
+    //     name: 'home__index',
+    //     component: IndexAll,
+    //   },
+    //   {
+    //     path: 'yours',
+    //     name: 'home__yours',
+    //     component: () => import('../views/IndexYours.vue'),
+    //   },
+    //   {
+    //     path: 'owners',
+    //     name: 'home__collectors',
+    //     component: () => import('../views/IndexCollectors.vue')
+    //   },
+    //   {
+    //     path: ':address',
+    //     name: 'home__collector',
+    //     component: () => import('../views/IndexCollector.vue'),
+    //   },
+    // ]
   },
-  {
-    path: '/tokens/:tokenId',
-    name: 'token',
-    component: () => import('../views/TokenOverlay.vue')
-  },
-  {
-    path: '/web3connect',
-    name: 'web3connect',
-    component: () => import('../components/Web3Connect.vue')
-  }
+  // {
+  //   path: '/tokens/:tokenId',
+  //   name: 'token',
+  //   component: () => import('../views/TokenOverlay.vue')
+  // },
+  // {
+  //   path: '/web3connect',
+  //   name: 'web3connect',
+  //   component: () => import('../components/Web3Connect.vue')
+  // }
 ]
 
 const router = createRouter({
