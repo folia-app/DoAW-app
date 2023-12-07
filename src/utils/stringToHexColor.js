@@ -11,5 +11,5 @@ export default function stringToHexColor(text) {
 		const value = (hash >> (j * 8)) & 0xFF;
 		color += ('00' + value.toString(16)).substr(-2);
 	}
-	return color;
+	return color.slice(0, 4);
 }

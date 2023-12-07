@@ -1,13 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Index from '../views/Index.vue'
+import Splash from '../views/Splash.vue'
 // import IndexAll from '../views/GridViewsIndex.vue'
 import IndexAll from '../views/IndexAllList.vue'
-import EmptyView from '../views/EmptyView.vue'
+// import EmptyView from '../views/EmptyView.vue'
 // import Token from '../views/Token.vue'
 
 const routes = [
   {
     path: '/',
+    component: Splash,
+  },
+  {
+    path: '/index',
     component: Index,
     children: [
       {
@@ -30,58 +35,7 @@ const routes = [
         name: 'home__collector',
         component: () => import('../views/IndexCollector.vue'),
       },
-    ],
-    // children: [
-    //   {
-    //     path: '',
-    //     name: 'home',
-    //     redirect: import.meta.env.VITE_SOLD_OUT ? '/sneks' : '/mint'
-    //   },
-    //   {
-    //     path: 'mint',
-    //     name: 'mint',
-    //     component: Mint
-    //   },
-    //   {
-    //     path: 'sneks',
-    //     name: 'sneks',
-    //     component: () => import('../views/Sneks.vue'),
-    //     children: [
-    //       {
-    //         path: '',
-    //         name: 'sneks-index',
-    //         component: () => import('../views/SneksIndex.vue'), // lazy loading but not required
-    //         // children: [
-    //         //   {
-    //         //     path: ':tokenId',
-    //         //     name: 'sneks-index-token',
-    //         //     component: () => import('../views/Token.vue')
-    //         //   }
-    //         // ]
-    //       },
-    //       {
-    //         path: 'yours',
-    //         name: 'sneks-yours',
-    //         component: () => import('../views/SneksProfile.vue')
-    //       },
-    //       {
-    //         path: ':address',
-    //         name: 'sneks-profile',
-    //         component: () => import('../views/SneksProfile.vue')
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     path: 'bites',
-    //     name: 'bites',
-    //     component: () => import('../views/Bites.vue'),
-    //   },
-    //   {
-    //     path: 'faq',
-    //     name: 'faq',
-    //     component: () => import('../views/FAQ.vue')
-    //   },
-    // ],
+    ]
   },
   {
     path: '/tokens/:tokenId',
