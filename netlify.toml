@@ -1,5 +1,10 @@
 # proxy server media
 [[redirects]]
+  from = "/v1/metadata/*"
+  to = "http://188.166.103.115:3004/v1/metadata/:splat"
+  status = 200
+
+[[redirects]]
   from = "/server/*"
   to = "http://188.166.103.115:3001/:splat"
   status = 200
