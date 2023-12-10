@@ -77,7 +77,7 @@ import MintModal from '../components/MintModal.vue'
 import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
 
-const iframeUrl = import.meta.env.VITE_SERVER
+const iframeUrl = import.meta.env.VITE_SERVER + '/index.html'
 const winH = ref(window.innerHeight)
 
 const isLoggedIn = computed(() => store.getters.address)
