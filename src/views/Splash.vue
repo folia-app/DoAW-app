@@ -4,7 +4,7 @@
 
     <div class="pt-1.5 sm:pt-2 pb-2 sm:flex flex-wrap items-center text-center sm:text-left justify-between px-2.5" style="font-size:0.875em">
       <div class="max-w-full">JOAN HEEMSKERK</div>
-      <div class="pr-0.5">DEAD OR ALIVE WALLET</div>
+      <div class="pr-0.5">DoAW</div>
       <div class="relative">
         <div class="invisible">JOAN HEEMSKERK</div>
         <div class="absolute overlay text-center sm:text-right">
