@@ -3,7 +3,7 @@ import './style/index.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-// import store from './store'
+import store from './store'
 // import vClickOutside from "click-outside-vue3"
 // import { createMetaManager, plugin as vueMetaPlugin } from "vue-meta";
 
@@ -15,7 +15,7 @@ const app = createApp(App)
 
 app
   .use(router)
-  // .use(store)
+  .use(store)
   .mount('#app')
 
   // .use(metaManager)
