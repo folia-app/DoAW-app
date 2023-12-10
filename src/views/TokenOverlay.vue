@@ -2,24 +2,26 @@
   <article class="fixed overlay z-30 bg-black text-white">
     <iframe :src="doawIframeUrl({ entropy })" class="absolute overlay" @load="hideInfo(5000)" @click="hideInfo(0)" />
     
-    <aside class="absolute bottom-0 left-0 w-full bg-black text-white flex p-2.5 gap-3" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
+    <aside class="absolute top-0 md:top-auto md:bottom-0 left-0 w-full bg-black text-white flex p-2.5 gap-3" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
       <button class="px-4 border flex items-center justify-center flex-shrink-0" @click="goBack">&lt;&lt;</button>
-      <div class="flex-1 flex flex-col justify-evenly">
+      <div class="flex-1 min-w-0 flex flex-col">
         <div class="flex gap-3">
-          <div>DeadOrAliveWallet:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">#{{ ('00' + (index+1)).slice(-3) }}</a></div>
-          
-          <div>(OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>)</div>
+          <div>DoAW:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">#{{ ('00' + (index+1)).slice(-3) }}</a></div>
+          <div class="hidden md:block">(OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>)</div>
         </div>
-        <div class="flex gap3">
+        <div class="md:hidden">
+          OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>
+        </div>
+        <!-- <div class="hidden md:flex gap3">
           <div>SEEDPHRASE:</div>
           <div>
             <span v-for="word in mnemonic.split(' ')" :key="word" class="inline-block pr-3 uppercase" :style="{'color': stringToHexColor(word)}">
               {{ word }}
             </span>
           </div>
-        </div>
-        <div class="truncate">PRIVATEKEY_0: {{ privateKey0 }}</div>
-        <div class="truncate">ACCOUNT_0: <a :href="store.getters.etherscanLink({ address: address0 })" class="underline" target="_blank" rel="noopener noreferrer">{{address0}}</a></div>
+        </div> -->
+        <div class="hidden md:block truncate">PRIVATEKEY_0: {{ privateKey0 }}</div>
+        <div class="hidden md:block truncate">ACCOUNT_0: <a :href="store.getters.etherscanLink({ address: address0 })" class="underline" target="_blank" rel="noopener noreferrer">{{address0}}</a></div>
         <!-- <div class="truncate">OWNER: 
           <span v-if="!owner" class="animate-blink">...</span>
           <a v-else :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer">
