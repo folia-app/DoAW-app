@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z-30 overlay flex px-4 py-12 overflow-scroll">
+  <div class="fixed z-30 overlay flex px-2.5 py-12 overflow-scroll">
     <!-- card -->
     <div ref="cardEl" tabindex="0" class="m-auto w-full p-4 flex flex-col relative z-10 bg-black text-white border ffshadow-hard text-center" :style="{maxWidth: props.maxWidth}">
       <slot></slot>

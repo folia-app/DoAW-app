@@ -1,42 +1,41 @@
 <template>
   <article>
-    <section class="flex flex-col h-screen">
+    <section class="flex flex-col h-screen" :style="{height: winH + 'px'}">
       <!-- fills remaining screen after bottom bars -->
       <div class="relative flex-1">
         <iframe ref="iframeEl" :src="iframeUrl" class="absolute overlay" />
       </div>
 
       <!-- (bottom bar) -->
-      <div v-if="uiVisible" class="flex px-3 py-2.5 gap-2.5">
-        <div class="flex-1 grid grid-cols-4 gap-2">
-          <ConnectButton />
-          <button class="flex items-center justify-center border" @click="toggleIframePlayback()" :disabled="!isRunning" :class="{'opacity-50 border-dotted': !isRunning}">
-            {{ isPlaying || !isRunning ? 'PAUSE' : 'PLAY' }}
-          </button>
-          
-          <button class="flex items-center justify-center border" @click="onMintButtonClick">
-            MINT
-          </button>
-          <div class="flex flex-col justify-evenly">
-            <div class="w-full flex justify-between">
-              <div>MINTED:</div>
-              <div>
-                <template v-if="mintCount !== undefined">{{ mintCount }}</template><span v-else class="animate-blink">...</span>/<template v-if="maxSupply !== undefined">{{ maxSupply }}</template><span v-else class="animate-blink">...</span>
-              </div>
-            </div>
-            <div class="max-w-full flex justify-between">
-              <div class="pr-[0.5em]">PRICE:</div>
-              <div class="flex-1 min-w-0 truncate text-right">
-                <template v-if="$store.state.price">
-                  {{ $store.getters.weiToETH($store.state.price) }}
-                </template>
-                <span v-else class="animate-blink">...</span>
-              </div>
-              <div>&nbsp;ETH</div>
+      <div v-if="uiVisible" class="flex flex-wrap px-3 py-2.5 gap-2.5">
+        <ConnectButton class="w-full md:w-auto md:flex-1" />
+
+        <button class="h-12 flex-1 flex items-center justify-center border min-w-[40%] md:min-w-0" @click="toggleIframePlayback()" :disabled="!isRunning" :class="{'opacity-50 border-dotted': !isRunning}">
+          {{ isPlaying || !isRunning ? 'PAUSE' : 'PLAY' }}
+        </button>
+        
+        <button class="h-12 flex-1 flex items-center justify-center border min-w-[40%] md:min-w-0" @click="onMintButtonClick">
+          MINT
+        </button>
+
+        <div class="h-12 flex-1 flex flex-col justify-evenly min-w-[75%] md:min-w-0">
+          <div class="w-full flex justify-between">
+            <div>MINTED:</div>
+            <div>
+              <template v-if="mintCount !== undefined">{{ mintCount }}</template><span v-else class="animate-blink">...</span>/<template v-if="maxSupply !== undefined">{{ maxSupply }}</template><span v-else class="animate-blink">...</span>
             </div>
           </div>
+          <div class="max-w-full flex justify-between">
+            <div class="pr-[0.5em]">PRICE:</div>
+            <div class="flex-1 min-w-0 truncate text-right">
+              <template v-if="$store.state.price">
+                {{ $store.getters.weiToETH($store.state.price) }}
+              </template>
+              <span v-else class="animate-blink">...</span>
+            </div>
+            <div>&nbsp;ETH</div>
+          </div>
         </div>
-
         <button class="w-12 h-12 flex-shrink-0 flex items-center justify-center border" @click="infoModalVisible = true">
           ?
         </button>
@@ -79,6 +78,7 @@ import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
 
 const iframeUrl = import.meta.env.VITE_SERVER
+const winH = window.innerHeight
 
 const isLoggedIn = computed(() => store.getters.address)
 const mintCount = computed(() => store.getters.mintCount)
