@@ -16,5 +16,5 @@
 </template>
 
 <script setup>
-const iframeUrl = import.meta.env.VITE_SERVER
+const iframeUrl = import.meta.env.VITE_SERVER + '/index.html'
 </script>
