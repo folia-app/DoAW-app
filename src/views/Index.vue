@@ -64,7 +64,11 @@
       
       <!-- grid pages -->
       <div class="flex-1">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <keep-alive include="IndexAllList">
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
       </div>
     </section>   
   </article>
@@ -102,7 +106,7 @@ const isPlaying = ref(false)
 const entropyHex = ref()
 
 function listenToMessages (event) { 
-  console.log(event)
+  // console.log(event)
   // Handle the received message data
   if (iframeUrl.includes(event.origin)) {
     console.log('iframe message:', event.data)

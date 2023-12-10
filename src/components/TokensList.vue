@@ -10,32 +10,36 @@
     </template>
     <template v-else>
       <ul class="bg-black text-white">
-        <template v-for="n in 1">
-          <li v-for="token in props.tokens" :key="token.tokenId + '_' + n" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between">
-            <!-- token link -->
-            <router-link :to="'/tokens/' + token.tokenId" class="order-1 px-2.5 py-2.5">
-              <div>#{{ ('0000' + (token.index)).slice(-4) }}</div>
-            </router-link>
+        <li v-for="(token, index) in renderedTokens" :key="token.tokenId + '_' + index" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between">
+          <!-- token link -->
+          <div v-if="demoAmount">{{ index }}</div>
+          <router-link :to="'/tokens/' + token.tokenId" class="order-1 px-2.5 py-2.5">
+            <div>#{{ ('0000' + (token.index)).slice(-4) }}</div>
+          </router-link>
 
-            <router-link :to="'/tokens/' + token.tokenId" class="order-3 px-2.5 pb-2.5 md:py-2.5 md:flex-1 text-left mouse:hover:bg-[rgba(255,255,255,0.1)]">
-              <div class="uppercase">
-                <span v-for="word in mneuomonic(token.tokenId).split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
-                  {{ word }}
-                </span>
-              </div>
-            </router-link>
-            <!-- profile link -->
-            <!-- <a :href="$store.getters.openSeaLink({account: token.owner})" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-2.5 h-10 items-center underline mouse:hover:bg-[rgba(255,255,255,0.1)]">
+          <router-link :to="'/tokens/' + token.tokenId" class="order-3 px-2.5 pb-2.5 md:py-2.5 md:flex-1 text-left mouse:hover:bg-[rgba(255,255,255,0.1)]">
+            <div class="uppercase">
+              <span v-for="word in mneuomonic(token.tokenId).split(' ')" :key="word" class="inline-block pr-3" :style="{'color': stringToHexColor(word)}">
+                {{ word }}
+              </span>
+            </div>
+          </router-link>
+          <!-- profile link -->
+          <!-- <a :href="$store.getters.openSeaLink({account: token.owner})" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-2.5 h-10 items-center underline mouse:hover:bg-[rgba(255,255,255,0.1)]">
+            <Addr :address="token.owner" />
+          </a> -->
+          <router-link :to="'/' + token.owner.toLowerCase()" class="order-2 md:order-last flex-1 md:flex-none pl-3 pr-2.5 py-2.5 flex min-w-0 md:min-h-9 items-start justify-end text-right underline mouse:hover:bg-[rgba(255,255,255,0.1)] max-w-[24em]">
+            <div class="truncate min-w-0">
               <Addr :address="token.owner" />
-            </a> -->
-            <router-link :to="'/' + token.owner.toLowerCase()" class="order-2 md:order-last flex-1 md:flex-none pl-3 pr-2.5 py-2.5 flex min-w-0 md:min-h-9 items-start justify-end text-right underline mouse:hover:bg-[rgba(255,255,255,0.1)] max-w-[24em]">
-              <div class="truncate min-w-0">
-                <Addr :address="token.owner" />
-              </div>
-            </router-link>
-          </li>
-        </template>
+            </div>
+          </router-link>
+        </li>
       </ul>
+
+      <!-- lazy page loader -->
+      <Observer v-if="pageSize < tokens.length" class="min-h-[25vh] flex items-end justify-start animate-blink" :threshold="0.01" @visible="pageSize = pageSize + pageSizeStep">
+        <div class="sticky bottom-2.5 left-0 px-2.5">loading...</div>
+      </Observer>
     </template>
   </section>
 </template>
@@ -46,11 +50,37 @@
   import hexToBytes from '../utils/hexToBytes';
   import Addr from '../components/Addr.vue';
   import stringToHexColor from '../utils/stringToHexColor.js';
+  import { useRoute } from 'vue-router';
+  import { computed, ref, watch } from 'vue';
+  import Observer from './Observer.vue';
 
   const props = defineProps(['tokens'])
+  const route = useRoute()
+  const demoAmount = route.query.count
+
+  const tokens = computed(() => {
+    let tokens = props.tokens
+    if (demoAmount && tokens.length) {
+      tokens = Array(Number(demoAmount)).fill(tokens[0])
+    }
+    return tokens
+  })
   
   function mneuomonic (tokenId) {
     const entropy = tokenIdtoEntropy(tokenId)
     return utils.entropyToMnemonic(hexToBytes(entropy))
   }
+
+  // page size
+  const initilaPageSize = 32
+  const pageSizeStep = ref(32)
+  const pageSize = ref(initilaPageSize)
+
+  const renderedTokens = computed(() => tokens.value?.slice(0, pageSize.value))
+
+  watch(() => route.query.sort, (to, from) => {
+    pageSize.value = initilaPageSize
+    console.log(to, from)
+    console.log(renderedTokens.value?.length)
+  })
 </script>

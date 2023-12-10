@@ -7,6 +7,7 @@ const routes = [
   {
     path: '/',
     component: import.meta.env.VITE_SPLASH ? Splash : Index,
+    name: 'home',
     children: [
       {
         path: '',
