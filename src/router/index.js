@@ -66,7 +66,7 @@ const router = createRouter({
       // if (isSameAddress || isSameNetwork) {
       //   return
       // }
-      if (to.name.split('_')[0] === from.name.split('_')[0]) {
+      if (to.name?.split('_')[0] === from.name?.split('_')[0]) {
         return
       }
       // scroll to top
