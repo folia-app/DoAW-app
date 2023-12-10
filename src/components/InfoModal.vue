@@ -1,13 +1,14 @@
 <template>
 <Modal maxWidth="51em" class="text-center">
   <header class="mt-2">
-    <h1>DoAW</h1>
-    Dead or Alive Wallet<br><br>
+    <h1 style="font-size:1.75em">DoAW</h1>
+    <br>
+    <!-- Dead or Alive Wallet<br><br> -->
     by JOAN HEEMSKERK<br><br>
-    ~ presented by <a href="https://folia.app" class="underline" target="_blank">folia</a> ~<br>
+    - presented by <a href="https://folia.app" class="underline" target="_blank">folia</a> -<br>
   </header>
   <ol class="list-decimal border p-2 text-left my-6 pl-12">
-    <li>click START to generate <span v-for="(char, i) in ('SEEDPHRASES').split('')" :key="i" :style="{color: stringToHexColor(Array(6).fill(char).join())}">{{ char }}</span></li>
+    <li>click START to generate <span v-for="(char, i) in ('SEEDPHRASES').split('')" :key="i" :style="{colorff: stringToHexColor(Array(6).fill(char).join())}">{{ char }}</span></li>
     <li>PAUSE on your favorite</li>
     <li>CONNECT your ethereum wallet</li>
     <li>MINT a DoAW</li>
