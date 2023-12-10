@@ -88,7 +88,7 @@
   }
 
   function listenToMessages (event) { 
-    if (event.origin === import.meta.env.VITE_SERVER) {
+    if (import.meta.env.VITE_SERVER.includes(event.origin)) {
       if (event.data === 'run') {
         isRunning.value = true
         isPlaying.value = true

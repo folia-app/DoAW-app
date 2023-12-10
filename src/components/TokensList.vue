@@ -14,7 +14,7 @@
           <li v-for="token in props.tokens" :key="token.tokenId + '_' + n" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between">
             <!-- token link -->
             <router-link :to="'/tokens/' + token.tokenId" class="order-1 px-2.5 py-2.5">
-              <div>#{{ ('000' + (token.index)).slice(-3) }}</div>
+              <div>#{{ ('0000' + (token.index)).slice(-4) }}</div>
             </router-link>
 
             <router-link :to="'/tokens/' + token.tokenId" class="order-3 px-2.5 pb-2.5 md:py-2.5 md:flex-1 text-left mouse:hover:bg-[rgba(255,255,255,0.1)]">
