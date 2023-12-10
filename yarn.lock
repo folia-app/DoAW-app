@@ -2453,6 +2453,11 @@ end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
+erc721a@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/erc721a/-/erc721a-4.2.3.tgz#ca6469b0e54afb0f614272c2147dc4cb49ff223f"
+  integrity sha512-0deF0hOOK1XI1Vxv3NKDh2E9sgzRlENuOoexjXRJIRfYCsLlqi9ejl2RF6Wcd9HfH0ldqC03wleQ2WDjxoOUvA==
+
 es5-ext@^0.10.35, es5-ext@^0.10.46, es5-ext@^0.10.50, es5-ext@^0.10.53, es5-ext@^0.10.61, es5-ext@~0.10.14, es5-ext@~0.10.2, es5-ext@~0.10.46:
   version "0.10.62"
   resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.62.tgz#5e6adc19a6da524bf3d1e02bbc8960e5eb49a9a5"
@@ -3654,9 +3659,11 @@ next-tick@1, next-tick@^1.1.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
   integrity sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
 
-"nft-contracts@https://github.com/folia-app/DoAW-contracts":
+"nft-contracts@https://github.com/folia-app/DoAW-contracts#00f4e7d8fb6ce78ec6cc0ceb4af1ed947402f1bb":
   version "1.0.0"
-  resolved "https://github.com/folia-app/DoAW-contracts#07873ac357eac63b41d345b3b6ae7d38439b6fa3"
+  resolved "https://github.com/folia-app/DoAW-contracts#00f4e7d8fb6ce78ec6cc0ceb4af1ed947402f1bb"
+  dependencies:
+    erc721a "^4.2.3"
 
 node-addon-api@^7.0.0:
   version "7.0.0"

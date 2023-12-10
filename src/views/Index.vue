@@ -78,7 +78,7 @@ import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
 
 const iframeUrl = import.meta.env.VITE_SERVER
-const winH = window.innerHeight
+const winH = ref(window.innerHeight)
 
 const isLoggedIn = computed(() => store.getters.address)
 const mintCount = computed(() => store.getters.mintCount)
@@ -142,8 +142,18 @@ function onMintModalClose () {
   }
 }
 
+function onWindowResize () {
+  if (window.innerHeight < winH.value || window.innerWidth >= 1024) {
+    winH.value = window.innerHeight
+  }
+}
+
 window.addEventListener('message', listenToMessages)
-onUnmounted(() => window.removeEventListener('message', listenToMessages))
+window.addEventListener('resize', onWindowResize)
+onUnmounted(() => {
+  window.removeEventListener('message', listenToMessages)
+  window.removeEventListener('resize', onWindowResize)
+})
 </script>
 
 <style scoped>

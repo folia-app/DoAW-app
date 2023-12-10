@@ -13,7 +13,7 @@
         <template v-for="n in 1">
           <li v-for="token in props.tokens" :key="token.tokenId + '_' + n" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between">
             <!-- token link -->
-            <router-link :to="'/tokens/' + token.tokenId" class="order-1 px-2.5 py-2.5 mouse:hover:bg-[rgba(255,255,255,0.1)]">
+            <router-link :to="'/tokens/' + token.tokenId" class="order-1 px-2.5 py-2.5">
               <div>#{{ ('000' + (token.index)).slice(-3) }}</div>
             </router-link>
 

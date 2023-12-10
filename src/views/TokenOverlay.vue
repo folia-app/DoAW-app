@@ -2,16 +2,25 @@
   <article class="fixed overlay z-30 bg-black text-white">
     <iframe :src="doawIframeUrl({ entropy })" class="absolute overlay" @load="hideInfo(5000)" @click="hideInfo(0)" />
     
-    <aside class="absolute top-0 md:top-auto md:bottom-0 left-0 w-full bg-black text-white flex p-2.5 gap-3" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
-      <button class="px-4 border flex items-center justify-center flex-shrink-0" @click="goBack">&lt;&lt;</button>
+    <aside class="absolute top-0 md:top-auto md:bottom-0 left-0 w-full bg-black text-white flex justify-between" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
+      <button class="px-4 flex items-center justify-center flex-shrink-0 mouse:hover:bg-[rgba(255,255,255,0.1)] border-r border-neutral-800" @click="goBack">&lt;&lt;</button>
+
+      <div class="md:flex gap-10 py-2.5 px-4 items-center flex-1 min-w-0 justify-between">
+        <div class="whitespace-nowrap">DoAW:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer"><!-- #{{ ('00' + (index+1)).slice(-3) }} -->{{ tokenId.slice(0,4) }}-{{ tokenId.slice(-4) }}</a></div>
+        <div class="truncate">
+          OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>
+        </div>
+      </div>
+
+
       <!-- TODO single line like splash (disappears tho) -->
-      <div class="flex-1 min-w-0 flex flex-col">
+      <!-- <div class="flex-1 min-w-0 flex flex-col">
         <div class="flex gap-3">
           <div>DoAW:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer">#{{ ('00' + (index+1)).slice(-3) }}</a></div>
         </div>
         <div class="truncate">
           OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" /></a>
-        </div>
+        </div> -->
         
         <!-- <div class="hidden md:flex gap3">
           <div>SEEDPHRASE:</div>
@@ -30,7 +39,7 @@
             <Addr  :address="owner" />
           </a>
         </div> -->
-      </div>
+      <!-- </div> -->
     </aside>
   </article>
 </template>

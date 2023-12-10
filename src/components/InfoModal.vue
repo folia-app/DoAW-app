@@ -5,7 +5,7 @@
     <br>
     <!-- Dead or Alive Wallet<br><br> -->
     by JOAN HEEMSKERK<br><br>
-    - presented by <a href="https://folia.app" class="underline" target="_blank">folia</a> -<br>
+    - presented by <a href="https://folia.app/works/joan-heemskerk-doaw" class="underline" target="_blank">folia</a> -<br>
   </header>
   <ol class="list-decimal border p-2 text-left my-6 pl-12">
     <li>click START to generate <span v-for="(char, i) in ('SEEDPHRASES').split('')" :key="i" :style="{colorff: stringToHexColor(Array(6).fill(char).join())}">{{ char }}</span></li>
