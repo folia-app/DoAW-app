@@ -55,11 +55,11 @@
 
     <section v-if="uiVisible" id="index" class="min-h-[66vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
-      <nav class="sticky z-20 top-0 left-0 w-full h-10 flex items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
-        <div>LIST:</div>
-        <router-link to="/" class="px-[0.75em] pt-px">{{ isLoggedIn ? 'ALL' : 'WALLETS' }}</router-link>
-        <router-link v-if="isLoggedIn" to="/yours" class="px-[0.75em] pt-px">YOURS</router-link>
-        <router-link to="/owners" class="px-[0.75em] pt-px">OWNERS</router-link>
+      <nav class="sticky z-20 top-0 left-0 w-full py-2.5 h-16 md:h-10 flex flex-wrap items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
+        <div class="w-full md:w-auto">LIST:</div>
+        <router-link to="/" class="px-2 md:px-3 pt-px">{{ isLoggedIn ? 'ALL' : 'WALLETS' }}</router-link>
+        <router-link v-if="isLoggedIn" to="/yours" class="px-2 md:px-3 pt-px">YOURS</router-link>
+        <router-link to="/owners" class="px-2 md:px-3 pt-px">OWNERS</router-link>
       </nav>
       
       <!-- grid pages -->

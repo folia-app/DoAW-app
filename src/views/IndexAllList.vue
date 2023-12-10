@@ -1,5 +1,5 @@
 <template>
-  <nav class="sticky z-20 top-0 right-0 -mt-10 flex justify-end pointer-events-none">
+  <nav class="sticky z-20 top-6 md:top-0 right-0 -mt-10 flex justify-end pointer-events-none">
     <SortButton />
   </nav>
   <TokensList :tokens="tokens" />
