@@ -10,6 +10,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@unhead/vue": "^1.8.9",
     "@web3-onboard/core": "^2.21.2",
     "@web3-onboard/injected-wallets": "^2.10.9",
     "@web3-onboard/walletconnect": "^2.4.2-alpha.1",

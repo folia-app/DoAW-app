@@ -4,21 +4,18 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import { createHead } from '@unhead/vue'
 // import vClickOutside from "click-outside-vue3"
-// import { createMetaManager, plugin as vueMetaPlugin } from "vue-meta";
+
+const app = createApp(App)
 
 window.prerenderReady = false
 
-const app = createApp(App)
-// const metaManager = createMetaManager()
+const head = createHead()
 
 
 app
   .use(router)
   .use(store)
+  .use(head)
   .mount('#app')
-
-  // .use(metaManager)
-  // .use(vClickOutside)
-  // .use(vueMetaPlugin)
-  // .mount('#app')

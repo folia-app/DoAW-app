@@ -23,16 +23,25 @@ import SortButton from '../components/SortButton.vue';
 import { useRoute } from 'vue-router';
 import TokensList from '../components/TokensList.vue';
 import Addr from '../components/Addr.vue';
+import { useHead } from '@unhead/vue'
 
 const route = useRoute()
+const address = route.params.address?.toLowerCase()
 
 const tokens = computed(() => {
-  let tokens = store.state.nfts?.slice(0).filter(token => token.owner.toLowerCase() === route.params.address?.toLowerCase())
+  let tokens = store.state.nfts?.slice(0).filter(token => token.owner.toLowerCase() === address)
   if (tokens) {
     if (route.query.sort !== 'oldest') {
       tokens.reverse()
     }
   }
   return tokens
+})
+
+store.dispatch('ensName', address).then((name) => {
+  useHead(store.getters.meta({
+    title: name || address,
+    image: false
+  }))
 })
 </script>

@@ -28,7 +28,8 @@ import store from '../store';
 import SortButton from '../components/SortButton.vue';
 import { useRoute } from 'vue-router';
 import TokensList from '../components/TokensList.vue';
-import Addr from '../components/Addr.vue';
+// import Addr from '../components/Addr.vue';
+import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 
@@ -41,4 +42,9 @@ const tokens = computed(() => {
   }
   return tokens
 })
+
+useHead(store.getters.meta({
+  title: 'YOUR DoAWs',
+  image: false
+}))
 </script>

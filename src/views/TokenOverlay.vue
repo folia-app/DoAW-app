@@ -7,7 +7,7 @@
 
       <div class="flex-1 min-w-0 flex flex-col md:flex-row gap-1 py-2.5 md:py-0">
         <div class="flex-1 min-w-0 truncate md:border-r border-neutral-800 px-4 md:py-2.5">DoAW:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer"><!-- #{{ ('00' + (index+1)).slice(-3) }} -->{{ tokenId }}</a></div>
-        <div class="flex-1 min-w-0 truncate px-4 md:py-2.5">
+        <div class="flex-1 min-w-0 truncate px-4 md:py-2.5" v-if="owner">
           OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" :short="false" /></a>
         </div>
       </div>
@@ -101,10 +101,17 @@
   }
   window.addEventListener('message', listenToMessages)
   onUnmounted(() => window.removeEventListener('message', listenToMessages))
+
+  // meta
+  useHead(store.getters.meta({
+    title: mnemonic?.toUpperCase(),
+    img: false,
+  }))
 </script>
 
 <script>
   // import { RouteLocation } from 'vue-router';
+  import { useHead } from '@unhead/vue'
   let lastRt // : RouteLocation | undefined
   export default {
     methods: {

@@ -25,6 +25,7 @@
   import { computed } from 'vue';
   import store from '../store';
   import Addr from '../components/Addr.vue';
+  import { useHead } from '@unhead/vue'
 
   const leaderboard = computed(() => {
     let owners = store.state.nfts?.map(token => token.owner)
@@ -38,4 +39,9 @@
     }
     return owners
   })
+
+  useHead(store.getters.meta({
+    title: 'OWNERS',
+    image: false
+  }))
 </script>

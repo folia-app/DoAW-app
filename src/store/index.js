@@ -113,7 +113,72 @@ const store = createStore({
       }
       return account ? `${domain}/${account}`
         : domain + '/collection/' + import.meta.env.VITE_OPENSEA_COLLECTION_NAME
-    }
+    },
+    meta: () => ({ title, descrip, img, video }) => {
+      const meta = []
+      // defaults
+      const siteTitle = 'DoAW'
+      const siteDescrip = 'Joan Heemskerk, 2023'
+      const siteImg = '/doaw-swampneck.teal.jpeg'
+      const siteVideo = '/doaw-video-swampneck-loop-720p.mp4'
+      const twitterSite = '@foliafoliafolia'
+      const twitterCreator = undefined
+      
+      const description = descrip ? descrip : siteDescrip
+
+      title = title ? `${title} - ${siteTitle}` : siteTitle
+      // use site video if no custom image, so doesn't override custom img
+      video = img === undefined ? siteVideo : undefined
+      
+      // custom image
+      const image = img === undefined ? siteImg : img
+
+      meta.push({ name: 'og:url', content: window.location.href })
+      meta.push({ name: 'og:type', content: 'website'})
+
+      if (description) {
+        ['description', 'twitter:description', 'og:description'].forEach(name => meta.push({
+          name,
+          content: description
+        }))
+      }
+      if (image) {
+        ['og:image', 'twitter:image'].forEach(name => meta.push({
+          name,
+          content: image
+        }))
+      }
+      if (video) {
+        ['og:video', 'twitter:video'].forEach(name => meta.push({
+          name,
+          content: video
+        }))
+      }
+      if (video || image) {
+        meta.push({
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        })
+      }
+      if (twitterSite) {
+        meta.push({ name: 'twitter:site', content: twitterSite })
+      }
+      if (twitterCreator) {
+        meta.push({ name: 'twitter:creator', content: twitterCreator })
+      }
+
+      setTimeout(() => { window.prerenderReady = true }, 100)
+      
+      // add
+      return {
+        htmlAttrs: {
+          lang: 'en',
+          amp: false,
+        },
+        title,
+        meta
+      }
+    },
   },
   mutations: {
     WALLET(state, { wallet }) {

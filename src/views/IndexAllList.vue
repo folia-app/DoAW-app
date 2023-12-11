@@ -11,6 +11,7 @@ import store from '../store';
 import SortButton from '../components/SortButton.vue';
 import { useRoute } from 'vue-router';
 import TokensList from '../components/TokensList.vue';
+import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 
@@ -23,4 +24,8 @@ const tokens = computed(() => {
   }
   return tokens
 })
+
+useHead(store.getters.meta({
+  title: undefined,
+}))
 </script>
