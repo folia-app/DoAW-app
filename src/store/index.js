@@ -266,7 +266,7 @@ const store = createStore({
       if (paused) {
         throw new Error(`Sorry, minting is paused at the moment.\nPlease check back later or come to the discord for more information.`)
       }
-      
+
       const now = Date.now()
       const datePublic = await dispatch('getDatePublic')
       const waitUntil = new Date(datePublic).toLocaleString()
@@ -336,6 +336,7 @@ const store = createStore({
         }
         return dispatch('handlePendingTx', { name: 'mint', tx })
       } catch (e) {
+        console.error(e)
         if (e.toString().indexOf("rejected transaction") > -1) {
           throw new Error(`cancelled transaction`)
         } else {
@@ -371,14 +372,19 @@ const store = createStore({
     },
     async getDatePremint ({ state, commit }) {
       // skip lookup if already past
-      if (state.datePremint) {
+      if (state.datePremint !== undefined) {
         return state.datePremint
       }
+      if (!nftContract.premint) {
+        commit('SET_DATE_PREMINT', false)
+        return false
+      }
+
       try {
         const sec = await nftContract.premint()
         const date = sec.toNumber() * 1000
         commit('SET_DATE_PREMINT', date)
-        return 
+        return date
       } catch (e) {
         console.error(e)
         throw e
@@ -393,7 +399,7 @@ const store = createStore({
         const sec = await nftContract.startdate()
         const date = sec.toNumber() * 1000
         commit('SET_DATE_PUBLIC', date)
-        return 
+        return date
       } catch (e) {
         console.error(e)
         throw e

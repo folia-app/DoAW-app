@@ -20,8 +20,8 @@
   <div class="flex flex-col gap-3">
     <div>
       <!-- price -->
-      <div class="flex gap-1">
-        <div>PRICE:</div>
+      <div class="flex">
+        <div class="pr-4">PRICE:</div>
         <div class="flex-1 min-w-0 truncate text-right">
           <span v-if="!store.state.price" class="animate-blink">...</span>
           <template v-else>{{store.getters.weiToETH(store.state.price)}}</template>

@@ -15,7 +15,7 @@
     "@web3-onboard/walletconnect": "^2.4.2-alpha.1",
     "ethers": "^5.7.2",
     "merkletreejs": "^0.3.10",
-    "nft-contracts": "https://github.com/folia-app/DoAW-contracts#00f4e7d8fb6ce78ec6cc0ceb4af1ed947402f1bb",
+    "nft-contracts": "https://github.com/folia-app/DoAW-contracts#446e9daaa5100c51207287579b7338944fef692d",
     "pug": "^3.0.2",
     "vue": "^3.3.4",
     "vue-meta": "^2.4.0",

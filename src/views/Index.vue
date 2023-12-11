@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="max-w-full flex justify-between">
-            <div class="pr-[0.5em]">PRICE:</div>
+            <div class="pr-6">PRICE:</div>
             <div class="flex-1 min-w-0 truncate text-right">
               <template v-if="$store.state.price">
                 {{ $store.getters.weiToETH($store.state.price) }}
