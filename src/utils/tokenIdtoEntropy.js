@@ -1,3 +1,8 @@
+import { ethers } from 'ethers'
+
 export default function (tokenId) {
-  return BigInt(tokenId).toString(16).padStart(16, '0')
+  // adapated from doaw.js in DoAW repo
+  tokenId = ethers.BigNumber.from(tokenId)
+  const entropyHex = tokenId.toHexString(16).replace('0x', '').padStart(32, '0')
+  return entropyHex
 }

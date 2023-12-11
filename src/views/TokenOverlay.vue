@@ -53,7 +53,7 @@
   import { ethers } from 'ethers'
   import hexToBytes from '../utils/hexToBytes';
   import tokenIdtoEntropy from '../utils/tokenIdtoEntropy';
-  import stringToHexColor from '../utils/stringToHexColor';
+  // import stringToHexColor from '../utils/stringToHexColor';
 
   const route = useRoute()
   const tokenId = route.params.tokenId.toString()
@@ -61,13 +61,13 @@
   const entropy = tokenIdtoEntropy(tokenId)
   const mnemonic = ethers.utils.entropyToMnemonic(hexToBytes(entropy))
 
-  const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic)
-  const privateKey0 = hdNode.derivePath(ethers.utils.defaultPath).privateKey
-  const wallet = new ethers.Wallet(privateKey0)
-  const address0 = wallet.address
+  // const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic)
+  // const privateKey0 = hdNode.derivePath(ethers.utils.defaultPath).privateKey
+  // const wallet = new ethers.Wallet(privateKey0)
+  // const address0 = wallet.address
 
   const owner = computed(() => store.state.nfts?.find(nft => nft.tokenId === tokenId)?.owner)
-  const index = computed(() => store.state.nfts?.findIndex(nft => nft.tokenId === tokenId))
+  // const index = computed(() => store.state.nfts?.findIndex(nft => nft.tokenId === tokenId))
 
   const isRunning = ref(false)
   const isPlaying = ref(false)
