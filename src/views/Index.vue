@@ -107,6 +107,7 @@ const isPlaying = ref(false)
 const entropyHex = ref()
 
 function listenToMessages (event) { 
+  console.log(event.origin, event)
   // console.log(event)
   // Handle the received message data
   if (iframeUrl.includes(event.origin)) {
