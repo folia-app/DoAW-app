@@ -32,7 +32,7 @@
             <!-- <a :href="$store.getters.openSeaLink({account: token.owner})" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-2.5 h-10 items-center underline mouse:hover:bg-[rgba(255,255,255,0.1)]">
               <Addr :address="token.owner" />
             </a> -->
-            <router-link :to="'/' + token.owner.toLowerCase()" class="order-2 md:order-last flex-1 md:flex-none pl-3 pr-2.5 py-2.5 flex min-w-0 md:min-h-9 items-start justify-end text-right underline mouse:hover:bg-[rgba(255,255,255,0.1)] max-w-[24em]">
+            <router-link :to="'/' + token.owner.toLowerCase()" class="order-2 md:order-last flex-1 md:flex-none pl-3 pr-2.5 py-2.5 flex min-w-0 md:min-h-9 items-start justify-end text-right underline mouse:hover:bg-[rgba(255,255,255,0.1)]">
               <div class="truncate min-w-0">
                 <Addr :address="token.owner" />
               </div>
