@@ -80,6 +80,7 @@ import InfoModal from '../components/InfoModal.vue';
 import MintModal from '../components/MintModal.vue'
 import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
+import { useHead } from '@unhead/vue'
 
 const iframeUrl = import.meta.env.VITE_SERVER + '/index.html'
 const winH = ref(window.innerHeight)
@@ -159,6 +160,10 @@ onUnmounted(() => {
   window.removeEventListener('message', listenToMessages)
   window.removeEventListener('resize', onWindowResize)
 })
+
+useHead(store.getters.meta({
+  title: undefined,
+}))
 </script>
 
 <style scoped>
