@@ -8,7 +8,7 @@
   
   /* web3onboard - https://onboard.blocknative.com/docs/getting-started/custom-styling */
   --onboard-font-family-normal: "ZK-Spectrum", monospace;
-  --onboard-modal-z-index: 200;
+  --onboard-modal-z-index: 40;
 }
 
 /* base / reset */
