@@ -107,10 +107,10 @@ const isPlaying = ref(false)
 const entropyHex = ref()
 
 function listenToMessages (event) { 
-  console.log(event.origin, event)
+  // console.log(event.origin, event)
   // console.log(event)
   // Handle the received message data
-  if (iframeUrl.includes(event.origin)) {
+  if (iframeUrl.includes(event.origin) && !event.data?.target?.includes('metamask')) {
     console.log('iframe message:', event.data)
     if (event.data === 'run') {
       isRunning.value = true
