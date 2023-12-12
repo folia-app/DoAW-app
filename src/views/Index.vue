@@ -168,7 +168,7 @@ nav .router-link-exact-active{
 }
 
 @screen mouse {
-  nav :not(.router-link-exact-active):hover{
+  nav a:not(.router-link-exact-active):hover{
     background: white;
     color:black;
   }
