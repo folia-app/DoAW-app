@@ -11,7 +11,7 @@
     <template v-else>
       <Observer @visible="onListVisible" :threshold="0.01">
         <button v-if="tokens && (tokens.length < props.tokens.length)" class="sticky top-16 md:top-10 bg-black border text-white text-center py-2 w-full" @click="updateTokenList">
-          LOAD {{ props.tokens.length - tokens.length }} NEW DoAWs
+          LOAD {{ props.tokens.length - tokens.length }} NEW DoAW
         </button>
         <ul class="bg-black text-white">
           <li v-for="(token, index) in renderedTokens" :key="token.tokenId + '_' + index" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between">
