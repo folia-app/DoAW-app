@@ -48,6 +48,24 @@ async function init() {
   // listen for transfers
   nftContract.on('Transfer', wrappedProcessNFTTransfer)
 
+  // =======================================
+  // shaDoAW
+  // =======================================
+  
+  let shadoawContract = new ethers.Contract(Contracts.shaDoAW.networks[network].address, Contracts.shaDoAW.abi, provider)
+  console.log(network, Contracts.shaDoAW.networks[network].address)
+
+  // get all previous Transfer events from NFTContract
+  shadoawContract.queryFilter(shadoawContract.filters.Transfer(), 0)
+    .then((events) => {
+      console.log(events)
+      store.commit('SHADOAWS_LOADED')
+      events.forEach(processShadoawTransfer)
+    })
+
+  // listen for transfers
+  // shadoawContract.on('Transfer', wrappedProcessNFTTransfer)
+
   // metadataContract.baseURI().then((baseURI) => {
   //   store.commit('BASE_URI', baseURI)
   // })
@@ -70,6 +88,21 @@ function processNFTTransfer(event) {
     let nft = store.state.nfts.find(nft => nft.tokenId === tokenId.toString())
     nft.owner = to
     store.commit('UPDATE_NFT', nft)
+  }
+}
+
+function processShadoawTransfer(event) {
+  var from = event.args[0]
+  var to = event.args[1].toString()
+  var tokenId = event.args[2].toString() // ethers.BigNumber.from(event.args[2])
+  if (from === ethers.constants.AddressZero) {
+    const shadoaw = { tokenId, owner: to, captured: false }
+    store.commit('ADD_SHADOAW', shadoaw)
+  } else {
+    const shadoaw = store.state.shadoaws.find(shadoaw => shadoaw.tokenId === tokenId.toString())
+    shadoaw.owner = to
+    shadoaw.captured = true
+    store.commit('UPDATE_SHADOAW', shadoaw)
   }
 }
 

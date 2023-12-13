@@ -63,6 +63,7 @@ const store = createStore({
       wallet: {},
       account: {},
       nfts: undefined,
+      shadoaws: undefined,
       price: undefined,
       datePremint: undefined,
       datePublic: undefined,
@@ -107,10 +108,11 @@ const store = createStore({
             : `/address/${getters.contractAddress}`
       return url
     },
-    openSeaLink: (state, getters) => ({ tokenId, account }) => {
+    openSeaLink: (state, getters) => ({ tokenId, account, contractAddress }) => {
       const domain = `https://${state.network == 'homestead' ? '' : 'testnets.'}opensea.io`
+      contractAddress = contractAddress ?? getters.contractAddress
       if (tokenId) {
-        return `${domain}/assets/${state.network === 'homestead' ? 'ethereum' : network}/${getters.contractAddress}/${tokenId}`
+        return `${domain}/assets/${state.network === 'homestead' ? 'ethereum' : network}/${contractAddress}/${tokenId}`
       }
       return account ? `${domain}/${account}`
         : domain + '/collection/' + import.meta.env.VITE_OPENSEA_COLLECTION_NAME
@@ -202,6 +204,19 @@ const store = createStore({
     UPDATE_NFT(state, nft) {
       const index = state.nfts.findIndex(v => v.tokenId === nft.tokenId)
       state.nfts.splice(index, 1, nft)
+    },
+    SHADOAWS_LOADED (state) {
+      state.shadoaws = []
+    },
+    ADD_SHADOAW(state, nft) {
+      if (state.shadoaws === undefined) {
+        state.shadoaws = []
+      }
+      state.shadoaws.push(nft)
+    },
+    UPDATE_SHADOAW(state, nft) {
+      const index = state.shadoaws.findIndex(v => v.tokenId === nft.tokenId)
+      state.shadoaws.splice(index, 1, nft)
     },
     BASE_URI(state, baseURI) {
       state.baseURI = baseURI
