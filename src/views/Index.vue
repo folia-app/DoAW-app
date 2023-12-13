@@ -60,6 +60,7 @@
         <router-link to="/" class="px-2 md:px-3 pt-px">{{ isLoggedIn ? 'ALL' : 'DoAWs' }}</router-link>
         <router-link v-if="isLoggedIn" to="/yours" class="px-2 md:px-3 pt-px">YOURS</router-link>
         <router-link to="/owners" class="px-2 md:px-3 pt-px">OWNERS</router-link>
+        <router-link to="/shaDoAWs" class="px-2 md:px-3 pt-px">shaDoAWs</router-link>
       </nav>
       
       <!-- grid pages -->

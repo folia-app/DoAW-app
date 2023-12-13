@@ -25,6 +25,11 @@ const routes = [
         component: () => import('../views/IndexCollectors.vue')
       },
       {
+        path: 'shaDoAWs',
+        name: 'home__shadoaws',
+        component: () => import('../views/IndexShadoaws.vue'),
+      },
+      {
         path: ':address',
         name: 'home__collector',
         component: () => import('../views/IndexCollector.vue'),
