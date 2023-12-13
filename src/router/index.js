@@ -13,11 +13,13 @@ const routes = [
         path: '',
         name: 'home__index',
         component: IndexAll,
+        meta: { sort: true }
       },
       {
         path: 'yours',
         name: 'home__yours',
         component: () => import('../views/IndexYours.vue'),
+        meta: { sort: true }
       },
       {
         path: 'owners',
@@ -28,11 +30,13 @@ const routes = [
         path: 'shaDoAWs',
         name: 'home__shadoaws',
         component: () => import('../views/IndexShadoaws.vue'),
+        meta: { sort: true }
       },
       {
         path: ':address',
         name: 'home__collector',
         component: () => import('../views/IndexCollector.vue'),
+        meta: { sort: true }
       },
     ]
   },

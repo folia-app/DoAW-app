@@ -4,9 +4,6 @@
   </template>
 
   <template v-else>
-    <nav class="sticky z-20 top-6 md:top-0 right-0 -mt-10 flex justify-end pointer-events-none">
-      <SortButton />
-    </nav>
     <!-- <div class="flex bg-neutral-800 text-white sticky top-10 z-20">
       <div class="flex-1 flex relative px-2.5 h-10 items-center gap-3">
         <div>CONNECTED:</div>

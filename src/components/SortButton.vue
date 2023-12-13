@@ -1,5 +1,5 @@
 <template>
-  <button class="h-10 px-2.5 flex items-center justify-end pointer-events-auto" @click="toggleSort">
+  <button class="py-2.5 px-2.5 flex items-center justify-end pointer-events-auto" @click="toggleSort">
     {{ isSortNewest ? 'NEW' : 'OLD' }}<span class="hidden md:inline">EST</span>↓
   </button>
 </template>

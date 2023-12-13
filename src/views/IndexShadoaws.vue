@@ -1,7 +1,7 @@
 <template>
-  <nav class="sticky z-20 top-6 md:top-0 right-0 -mt-10 flex justify-end pointer-events-none">
+  <!-- <nav class="sticky z-20 top-0 md:top-0 right-0 -mt-[4.125rem] md:-mt-10 flex justify-end pointer-events-none">
     <SortButton />
-  </nav>
+  </nav> -->
   <section class="tokens-list relative z-10">
     <template v-if="!tokens">
       <p class="animate-blink px-2.5 py-2">
@@ -19,12 +19,12 @@
             #{{ token.tokenId }}
           </a>
 
-          <a :href="store.getters.openSeaLink({tokenId: token.tokenId, contractAddress})" target="_blank" rel="noopener noreferrer" class="order-3 px-2.5 pb-2.5 md:py-2.5 md:flex-1 text-left mouse:hover:bg-[rgba(255,255,255,0.1)]">
-            <div class="flex gap-3">
-              <div class="whitespace-nowrap">
+          <a :href="store.getters.openSeaLink({tokenId: token.tokenId, contractAddress})" target="_blank" rel="noopener noreferrer" class="order-3 block w-full md:w-auto px-2.5 pb-2.5 md:py-2.5 md:flex-1 text-left mouse:hover:bg-[rgba(255,255,255,0.1)]">
+            <div class="md:flex gap-3">
+              <div class="inline md:block whitespace-nowrap">
                 shaDoAW of
               </div>
-              <div>
+              <div class="inline md:block">
                 <span v-for="word in mneuomonic(token.tokenId).split(' ')" :key="word" class="uppercase inline-block pr-3" :style="{'colorff': stringToHexColor(word)}">
                   {{ word }}
                 </span>

@@ -55,12 +55,17 @@
 
     <section v-if="uiVisible" id="index" class="min-h-[66vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
-      <nav class="sticky z-20 top-0 left-0 w-full py-2.5 h-16 md:h-10 flex flex-wrap items-center gap-[0.5em] leading-snug px-3 bg-neutral-900">
-        <div class="w-full md:w-auto">LIST:</div>
-        <router-link to="/" class="px-2 md:px-3 pt-px">{{ isLoggedIn ? 'ALL' : 'DoAWs' }}</router-link>
-        <router-link v-if="isLoggedIn" to="/yours" class="px-2 md:px-3 pt-px">YOURS</router-link>
-        <router-link to="/owners" class="px-2 md:px-3 pt-px">OWNERS</router-link>
-        <router-link to="/shaDoAWs" class="px-2 md:px-3 pt-px">shaDoAWs</router-link>
+      <nav class="sticky z-20 top-0 left-0 w-full py-2.5 h-16 md:h-10 leading-snug bg-neutral-900 flex justify-between">
+        <div class="flex flex-wrap items-center gap-[0.5em] px-3">
+          <div class="w-full md:w-auto">LIST:</div>
+          <router-link to="/" class="px-1 md:px-3 pt-px -ml-1 md:ml-0">{{ isLoggedIn ? 'ALL' : 'DoAWs' }}</router-link>
+          <router-link v-if="isLoggedIn" to="/yours" class="px-1 md:px-3 pt-px">YOURS</router-link>
+          <router-link to="/owners" class="px-1 md:px-3 pt-px">OWNERS</router-link>
+          <router-link to="/shaDoAWs" class="px-1 md:px-3 pt-px">shaDoAWs</router-link>
+        </div>
+        <div v-if="$route.meta.sort" class="absolute top-0 right-0 md:static flex items-center">
+          <SortButton />
+        </div>
       </nav>
       
       <!-- grid pages -->
@@ -82,6 +87,7 @@ import MintModal from '../components/MintModal.vue'
 import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
 import { useHead } from '@unhead/vue'
+import SortButton from '../components/SortButton.vue';
 
 const iframeUrl = import.meta.env.VITE_SERVER + '/index.html'
 const winH = ref(window.innerHeight)
