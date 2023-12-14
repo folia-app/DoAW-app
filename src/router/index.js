@@ -30,7 +30,6 @@ const routes = [
         path: 'shaDoAWs',
         name: 'home__shadoaws',
         component: () => import('../views/IndexShadoaws.vue'),
-        meta: { sort: true }
       },
       {
         path: ':address',

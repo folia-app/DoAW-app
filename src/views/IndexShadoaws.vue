@@ -1,7 +1,4 @@
 <template>
-  <!-- <nav class="sticky z-20 top-0 md:top-0 right-0 -mt-[4.125rem] md:-mt-10 flex justify-end pointer-events-none">
-    <SortButton />
-  </nav> -->
   <section class="tokens-list relative z-10">
     <template v-if="!tokens">
       <p class="animate-blink px-2.5 py-2">
@@ -68,11 +65,11 @@ const contractAddress = Contracts.shaDoAW.networks[import.meta.env.VITE_NETWORK_
 
 const tokens = computed(() => {
   let tokens = store.state.shadoaws?.slice(0)
-  if (tokens) {
-    if (route.query.sort !== 'oldest') {
-      tokens.reverse()
-    }
-  }
+  // if (tokens) {
+  //   if (route.query.sort !== 'oldest') {
+  //     tokens.reverse()
+  //   }
+  // }
   return tokens
 })
 
