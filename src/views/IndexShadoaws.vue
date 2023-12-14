@@ -10,7 +10,7 @@
     </template>
     <template v-else>
       <ul class="bg-black text-white">
-        <li v-for="(token, index) in tokens" :key="token.tokenId + '_' + index" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between" :class="{'opacity-[.45]': !token.captured}">
+        <li v-for="(token, index) in tokens" :key="token.tokenId + '_' + index" class="flex flex-wrap md:flex-nowrap min-h-9 justify-between" :class="{'text-neutral-500': !token.captured}">
           <!-- token link -->
           <a :href="store.getters.openSeaLink({tokenId: token.tokenId})" target="_blank" rel="noopener noreferrer" class="text-neutral-500ff order-1 pl-2.5 pr-1.5 py-2.5 block">
             #{{ token.tokenId }}
@@ -36,7 +36,7 @@
             <template v-if="token.captured">
               <Addr :address="token.owner" class="underline" />
             </template>
-            <span v-else class="opacity-30ff">
+            <span v-else>
               {{store.getters.addrShort(token.owner)}}
             </span>
           </a>
