@@ -5,7 +5,7 @@
       <div class="flex-1 min-w-0 truncate">
         <a :href="$store.getters.openSeaLink({account: route.params.address})" target="_blank" rel="noopener noreferrer" class="underline">
           <Addr :address="route.params.address" />
-        </a>
+        </a><span class="inline-block transform -translate-y-[0.15em] text-[1.3em] pl-[0.2em]">↗</span>
       </div>
     </div>
     <router-link class="px-2.5 h-10 flex items-center mouse:hover:bg-[rgba(255,255,255,0)]" to="/">X</router-link>
