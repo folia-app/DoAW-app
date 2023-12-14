@@ -53,7 +53,7 @@
     <MintModal v-if="mintModalVisible" @close="onMintModalClose" :entropyHex="entropyHex" />
     <InfoModal v-if="infoModalVisible" @close="infoModalVisible = false" />
 
-    <section v-if="uiVisible" id="index" class="min-h-[66vh] flex flex-col">
+    <section v-if="uiVisible" id="list" class="min-h-[66vh] flex flex-col">
       <!-- sticky-top grid nav bar -->
       <nav class="sticky z-20 top-0 left-0 w-full py-2.5 h-16 md:h-10 leading-snug bg-neutral-900 flex justify-between">
         <div class="flex flex-wrap items-center gap-[0.5em] px-3">
@@ -88,9 +88,11 @@ import store from '../store';
 import { computed, onUnmounted, ref } from 'vue';
 import { useHead } from '@unhead/vue'
 import SortButton from '../components/SortButton.vue';
+import { useRoute } from 'vue-router';
 
 const iframeUrl = import.meta.env.VITE_SERVER + '/index.html'
 const winH = ref(window.innerHeight)
+const route = useRoute()
 
 const isLoggedIn = computed(() => store.getters.address)
 const mintCount = computed(() => store.getters.mintCount)
@@ -108,7 +110,7 @@ function openMintModal () {
   mintModalVisible.value = true
 }
 
-const uiVisible = ref(localStorage.getItem('hasStarted') ?? false)
+const uiVisible = ref((localStorage.getItem('hasStarted') || route.name !== 'home__index') ?? false)
 const isRunning = ref(false)
 const isPlaying = ref(false)
 const entropyHex = ref()

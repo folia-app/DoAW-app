@@ -82,6 +82,6 @@ function mneuomonic (shadoawtokenId) {
 }
 
 useHead(store.getters.meta({
-  title: undefined,
+  title: 'shaDoAWs',
 }))
 </script>
