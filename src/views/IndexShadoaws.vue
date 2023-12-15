@@ -66,12 +66,11 @@ const contractAddress = Contracts.shaDoAW.networks[import.meta.env.VITE_NETWORK_
 
 const tokens = computed(() => {
   let tokens = store.state.shadoaws?.slice(0)
-  tokens.reverse()
-  // if (tokens) {
-  //   if (route.query.sort !== 'oldest') {
-  //     tokens.reverse()
-  //   }
-  // }
+  if (tokens) {
+    if (route.query.sort !== 'oldest') {
+      tokens.reverse()
+    }
+  }
   return tokens
 })
 
