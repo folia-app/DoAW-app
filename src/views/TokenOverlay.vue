@@ -1,15 +1,26 @@
 <template>
-  <article class="fixed overlay z-30 bg-black text-white">
-    <iframe :src="doawIframeUrl({ entropy })" class="absolute overlay" @load="hideInfo(5000)" @click="hideInfo(0)" />
+  <article class="fixed overlay z-30 bg-neutral-900 text-white">
+    <iframe v-show="isMinted" :src="doawIframeUrl({ entropy })" class="absolute overlay" @load="hideInfo(5000)" @click="hideInfo(0)" />
     
     <aside class="absolute top-0 md:top-auto md:bottom-0 left-0 w-full bg-black text-white flex justify-between" :class="{'opacity-0': !infoVisible}" @mouseenter="showInfo" @mouseleave="hideInfo(0)">
       <button class="px-4 flex items-center justify-center flex-shrink-0 mouse:hover:bg-[rgba(255,255,255,0.1)] border-r border-neutral-800" @click="goBack">&lt;&lt;</button>
 
       <div class="flex-1 min-w-0 flex flex-col md:flex-row gap-1 py-2.5 md:py-0">
-        <div class="flex-1 min-w-0 truncate md:border-r border-neutral-800 px-4 md:py-2.5">DoAW:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer"><!-- #{{ ('00' + (index+1)).slice(-3) }} -->{{ tokenId }}</a></div>
-        <div class="flex-1 min-w-0 truncate px-4 md:py-2.5" v-if="owner">
-          OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" :short="false" /></a>
-        </div>
+        <!-- (loading) -->
+        <template v-if="!store.state.nfts">
+          <div class="flex-1 min-w-0 truncate px-4 md:py-2.5">loading...</div>
+        </template>
+        <!-- (not found) -->
+        <template v-else-if="!isMinted">
+          <div class="flex-1 min-w-0 truncate px-4 md:py-2.5">ERROR: no DoAW with ID {{ tokenId }}</div>
+        </template>
+        <!-- (info) -->
+        <template v-else>
+          <div class="flex-1 min-w-0 truncate md:border-r border-neutral-800 px-4 md:py-2.5">DoAW:<a :href="store.getters.openSeaLink({ tokenId })" class="underline" target="_blank" rel="noreferrer"><!-- #{{ ('00' + (index+1)).slice(-3) }} -->{{ tokenId }}</a></div>
+          <div class="flex-1 min-w-0 truncate px-4 md:py-2.5" v-if="owner">
+            OWNER:<a :href="store.getters.openSeaLink({ account: owner })" class="underline" target="_blank" rel="noreferrer"><Addr  :address="owner" :short="false" /></a>
+          </div>
+        </template>
       </div>
 
 
@@ -57,9 +68,9 @@
 
   const route = useRoute()
   const tokenId = route.params.tokenId.toString()
-
-  const entropy = tokenIdtoEntropy(tokenId)
-  const mnemonic = ethers.utils.entropyToMnemonic(hexToBytes(entropy))
+  
+  const entropy = !isNaN(tokenId) && tokenIdtoEntropy(tokenId)
+  const mnemonic = !isNaN(tokenId) && ethers.utils.entropyToMnemonic(hexToBytes(entropy))
 
   // const hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic)
   // const privateKey0 = hdNode.derivePath(ethers.utils.defaultPath).privateKey
@@ -67,6 +78,7 @@
   // const address0 = wallet.address
 
   const owner = computed(() => store.state.nfts?.find(nft => nft.tokenId === tokenId)?.owner)
+  const isMinted = computed(() => store.state.nfts && owner.value)
   // const index = computed(() => store.state.nfts?.findIndex(nft => nft.tokenId === tokenId))
 
   const isRunning = ref(false)
@@ -104,7 +116,7 @@
 
   // meta
   useHead(store.getters.meta({
-    title: mnemonic?.toUpperCase(),
+    title: isNaN(tokenId) ? 'DoAW not found' : mnemonic?.toUpperCase(),
     img: false,
   }))
 </script>
