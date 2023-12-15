@@ -1,5 +1,6 @@
 <template>
   <section class="tokens-list relative z-10">
+    <p class="m-2.5 mb-0 border border-neutral-400 p-3 leading-relaxed"><a href="https://opensea.io/collection/shadoaw" target="_blank" rel="noopener noreferer" class="underline">shaDoAWs</a> cast into the wallets exposed by the first mints of DoAW. DoAWs play through the sub-infinite number of private keys derived from their seed phrase, but each shaDoAW plays through all possible seed phrases of wallets on Ethereum (2^160)</p>
     <template v-if="!tokens">
       <p class="animate-blink px-2.5 py-2">
         loading...
@@ -65,6 +66,7 @@ const contractAddress = Contracts.shaDoAW.networks[import.meta.env.VITE_NETWORK_
 
 const tokens = computed(() => {
   let tokens = store.state.shadoaws?.slice(0)
+  tokens.reverse()
   // if (tokens) {
   //   if (route.query.sort !== 'oldest') {
   //     tokens.reverse()
