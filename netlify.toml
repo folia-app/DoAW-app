@@ -1,12 +1,12 @@
 # proxy server media
 [[redirects]]
   from = "/v1/metadata/*"
-  to = "https://folia-doaw.fly.dev/v1/metadata/:splat"
+  to = "http://188.166.103.115:3004/v1/metadata/:splat"
   status = 200
 
 [[redirects]]
   from = "/server/*"
-  to = "https://folia-doaw.fly.dev/:splat"
+  to = "http://188.166.103.115:3001/:splat"
   status = 200
   
 [[redirects]]
