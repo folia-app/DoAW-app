@@ -1,101 +1,5 @@
 import { ethers } from 'ethers'
 
-
-/**
- * A provider that spreads load, limits concurrency, and backs off.
- *
- * The first version of this pointed every read at one free gateway with no
- * throttle. That works until a page renders a hundred owner addresses: each
- * Addr component resolves ENS, reverse resolution is roughly four calls, and the
- * page fires four hundred requests in a burst. Free gateways rate-limit per IP
- * over a time window, so the burst earns 429s, the queries throw, and the grid
- * empties — the same symptom as the bug this was meant to fix, from the
- * opposite cause.
- *
- * So three things, all at the transport layer where every existing call site
- * gets them for free:
- *
- *   - requests round-robin across the pool instead of hammering one host
- *   - a semaphore caps how many are in flight at once
- *   - 429 and 5xx retry with exponential backoff and jitter, moving to the next
- *     endpoint each attempt
- */
-class PooledProvider extends ethers.providers.JsonRpcProvider {
-  constructor (urls, { concurrency = 4, retries = 4 } = {}) {
-    super(urls[0])
-    this._urls = urls.slice()
-    this._cursor = 0
-    this._maxInFlight = concurrency
-    this._inFlight = 0
-    this._waiting = []
-    this._retries = retries
-    this._id = 0
-  }
-
-  _next () {
-    const u = this._urls[this._cursor % this._urls.length]
-    this._cursor++
-    return u
-  }
-
-  async _acquire () {
-    if (this._inFlight < this._maxInFlight) { this._inFlight++; return }
-    await new Promise((resolve) => this._waiting.push(resolve))
-    this._inFlight++
-  }
-
-  _release () {
-    this._inFlight--
-    const next = this._waiting.shift()
-    if (next) next()
-  }
-
-  async send (method, params) {
-    // super() kicks off ethers' network detection, and that calls send() before
-    // the subclass fields below exist. In node the timing hid it; in a browser
-    // it left the provider dead and the page silently empty. Fall back to plain
-    // behaviour until the pool is initialised.
-    if (!this._urls) return super.send(method, params)
-    await this._acquire()
-    try {
-      let lastErr
-      for (let attempt = 0; attempt <= this._retries; attempt++) {
-        const url = this._next()
-        try {
-          const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ jsonrpc: '2.0', id: ++this._id, method, params })
-          })
-          if (res.status === 429 || res.status >= 500) {
-            lastErr = new Error(`${res.status} from ${url}`)
-          } else {
-            const json = await res.json()
-            if (json.error) {
-              // A real rpc error — wrong args, unsupported method, range too
-              // wide. Retrying will not change the answer, so surface it.
-              const e = new Error(json.error.message || 'rpc error')
-              e.code = json.error.code
-              throw e
-            }
-            return json.result
-          }
-        } catch (e) {
-          if (e && e.code !== undefined) throw e   // genuine rpc error
-          lastErr = e
-        }
-        // backoff with jitter; every attempt also moves to the next endpoint
-        const wait = Math.min(2000, 150 * 2 ** attempt) + Math.random() * 120
-        await new Promise((resolve) => setTimeout(resolve, wait))
-      }
-      throw lastErr || new Error('all endpoints failed')
-    } finally {
-      this._release()
-    }
-  }
-}
-
-
 /**
  * Redundant, keyless RPC access.
  *
@@ -127,7 +31,7 @@ const urls = () =>
 export const providers = () => urls().map((u) => new ethers.providers.JsonRpcProvider(u))
 
 /** A read provider that fails over. Use for ordinary contract calls. */
-export const readProvider = () => new PooledProvider(urls())
+export const readProvider = () => providers()[0]
 
 /** Run fn against each endpoint until one answers. */
 export async function anyOf (fn) {
@@ -152,13 +56,12 @@ export async function anyOf (fn) {
  */
 export async function getAllLogs (address, abi, filterName, fromBlock = 0) {
   const errors = []
-  for (const url of urls()) {
-    const p = new PooledProvider([url], { concurrency: 2 })
+  for (const p of providers()) {
     try {
       const c = new ethers.Contract(address, abi, p)
       const logs = await c.queryFilter(c.filters[filterName](), fromBlock)
-      return { logs, via: url, mode: 'wide' }
-    } catch (e) { errors.push(`${url}: ${e.message.slice(0, 60)}`) }
+      return { logs, via: p.connection.url, mode: 'wide' }
+    } catch (e) { errors.push(`${p.connection.url}: ${e.message.slice(0, 60)}`) }
   }
   throw new Error('no endpoint served the full log range — ' + errors.slice(0, 2).join(' | '))
 }
@@ -203,17 +106,8 @@ export async function getTransferEvents (address, abi, fromBlock = 0) {
  * actually needs, and every call is a plain eth_call that all of the endpoints
  * above serve.
  */
-/** Not every ERC721 implements Enumerable; calling tokenByIndex on one that
- *  does not throws, which is how this fallback managed to break a listing it
- *  was written to rescue. shaDoAW is such a contract. */
-export const canEnumerate = (abi) =>
-  abi.some((x) => x.type === 'function' && x.name === 'tokenByIndex') &&
-  abi.some((x) => x.type === 'function' && x.name === 'totalSupply')
-
 export async function enumerateOwners (address, abi, batch = 25) {
-  // Through the pool, not a raw endpoint: this is two calls per token, so a
-  // few hundred for a full collection, and unthrottled that is an instant 429.
-  const run = async (p) => {
+  return anyOf(async (p) => {
     const c = new ethers.Contract(address, abi, p)
     const total = (await c.totalSupply()).toNumber()
     const ids = []
@@ -228,6 +122,5 @@ export async function enumerateOwners (address, abi, batch = 25) {
       owners.forEach((owner, k) => out.push({ tokenId: ids[i + k], owner }))
     }
     return out
-  }
-  return run(readProvider())
+  })
 }
