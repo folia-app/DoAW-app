@@ -1,7 +1,9 @@
 
 
 const network = import.meta.env.VITE_NETWORK
-const infuraKey = import.meta.env.VITE_INFURA_KEY
+// web3-onboard takes a single url per chain, so this cannot be the failover
+// pool; it is the first entry of it. Keyless, so nothing to leak or expire.
+const MAINNET_RPC = import.meta.env.VITE_RPC_MAINNET || 'https://gateway.tenderly.co/public/mainnet'
 
 import walletConnectModule from '@web3-onboard/walletconnect'
 import Onboard from '@web3-onboard/core'
@@ -27,7 +29,7 @@ const onboard = Onboard({
       id: 1,
       token: 'ETH',
       label: 'Ethereum Mainnet',
-      rpcUrl: `https://mainnet.infura.io/v3/${infuraKey}`
+      rpcUrl: MAINNET_RPC
     },
     {
       id: 11155111,

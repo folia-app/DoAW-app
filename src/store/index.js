@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { ethers } from 'ethers'
+import { readProvider, anyOf } from './rpc'
 import { MerkleTree } from 'merkletreejs';
 import Contracts from 'nft-contracts'
 import { init, getProvider, getNftContract, NFTContractDeploy } from './contracts'
@@ -9,9 +10,9 @@ import networks from './networks'
 init()
 
 const network = import.meta.env.VITE_NETWORK_NAME
-const infuraKey = import.meta.env.VITE_INFURA_KEY
-
-let provider = new ethers.providers.InfuraProvider(network, infuraKey)
+// Read-only access comes from the redundant keyless pool in ./rpc rather than a
+// single keyed provider. See that file for why.
+let provider = readProvider()
 let nftContract = getNftContract(provider)
 
 // this subscribes to the onboard.js state object and updates the vuex store anytime it changes
@@ -36,7 +37,7 @@ state.subscribe((update) => {
     const signer = etherProvider.getSigner()
     updateContracts(signer)
   } else {
-    const etherProvider = new ethers.providers.InfuraProvider(network, infuraKey)
+    const etherProvider = readProvider()
     updateContracts(etherProvider)
   }
 })
@@ -332,8 +333,7 @@ const store = createStore({
       let userBalance = getters.balance?.ETH
 
       if (!userBalance) {
-        const infuraProvider = new ethers.providers.InfuraProvider(network, infuraKey)
-        userBalance = (await infuraProvider.getBalance(getters.address))
+        userBalance = (await anyOf((p) => p.getBalance(getters.address)))
       } else {
         userBalance = ethers.utils.parseEther(userBalance)
       }
