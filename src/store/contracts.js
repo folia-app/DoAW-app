@@ -1,7 +1,7 @@
 import store from './index'
 import { ethers } from 'ethers'
 import Contracts from 'nft-contracts'
-import { getAllLogs, enumerateOwners, readProvider } from './rpc'
+import { getTransferEvents, readProvider } from './rpc'
 
 const network = import.meta.env.VITE_NETWORK_NAME
 
@@ -42,8 +42,8 @@ async function init() {
   // let metadataContract = new ethers.Contract(Metadata.networks[network].address, Metadata.abi, provider)
 
   // get all previous Transfer events from NFTContract
-  getAllLogs(NFTContractDeploy.networks[network].address, NFTContractDeploy.abi, 'Transfer')
-    .then(({ logs: events }) => {
+  getTransferEvents(NFTContractDeploy.networks[network].address, NFTContractDeploy.abi)
+    .then(({ events }) => {
       store.commit('NFTS_LOADED')
       events.forEach(processNFTTransfer)
     })
@@ -66,8 +66,8 @@ async function init() {
   console.log(network, Contracts.shaDoAW.networks[network].address)
 
   // get all previous Transfer events from shaDoAW
-  getAllLogs(Contracts.shaDoAW.networks[network].address, Contracts.shaDoAW.abi, 'Transfer')
-    .then(({ logs: events }) => {
+  getTransferEvents(Contracts.shaDoAW.networks[network].address, Contracts.shaDoAW.abi)
+    .then(({ events }) => {
       store.commit('SHADOAWS_LOADED')
       events.forEach(processShadoawTransfer)
     })
